@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- BUILD: english-name-tracing-v1.1 brand=top-left-school footer=ken-logo names=Kamila,Ayan,Halima,Clemence -->
+    <!-- BUILD: english-name-tracing-v2 guest+cats lower/upper/names unlock=off names=Kamila,Ayan,Halima -->
     <title>English Name Tracing｜將軍澳培智學校</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -171,31 +171,43 @@
 </div>
 
 <div id="player-setup" class="absolute inset-0 z-[80] flex items-center justify-center bg-black/50 p-3">
-    <div class="bg-white rounded-3xl w-full max-w-[440px] overflow-hidden shadow-2xl p-5 flex flex-col gap-4">
+    <div class="bg-white rounded-3xl w-full max-w-[480px] overflow-hidden shadow-2xl p-5 flex flex-col gap-4">
         <div class="flex items-center justify-center gap-2">
             <img class="school-logo w-10 h-10 rounded-xl bg-white object-contain border border-slate-200" src="https://www.puichi.edu.hk/it-school/php/webcms/files/upload/tinymce//1a__pui_chi_logo_png_1791177564.png" alt="將軍澳培智學校校徽" width="40" height="40" decoding="async">
             <p class="font-black text-sky-700 text-sm sm:text-base">將軍澳培智學校</p>
         </div>
-        <h2 class="text-2xl font-black text-slate-800 text-center">What is your name?</h2>
-        <input id="player-name" type="text" maxlength="18" autocomplete="off" spellcheck="false" placeholder="Type your name" class="w-full border-4 border-indigo-200 rounded-2xl px-4 py-3 text-xl font-black text-center text-slate-800">
+        <h2 class="text-2xl font-black text-slate-800 text-center">English Names</h2>
+        <p class="text-center font-bold text-slate-500 text-sm">Guest mode — no name needed</p>
         <p class="font-black text-slate-700 text-center">Pick a pen colour</p>
         <div id="pen-swatches" class="flex flex-wrap justify-center gap-3"></div>
-        <button id="player-start" disabled class="bubble-btn w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-3 rounded-2xl text-2xl disabled:opacity-40 disabled:pointer-events-none">Start</button>
+        <button id="player-start" class="bubble-btn w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-3 rounded-2xl text-2xl">Start as Guest</button>
     </div>
 </div>
 
 <div id="station-modal" class="hidden absolute inset-0 z-[70] flex items-center justify-center bg-black/45 p-3">
-    <div class="bg-white rounded-3xl w-full max-w-[440px] overflow-hidden shadow-2xl">
-        <div class="bg-amber-700 text-white font-black text-xl sm:text-2xl px-4 py-3 flex items-center justify-between">
-            <span>Names — Write our names</span>
+    <div class="bg-white rounded-3xl w-full max-w-[560px] max-h-[92vh] overflow-y-auto shadow-2xl">
+        <div class="bg-amber-700 text-white font-black text-xl sm:text-2xl px-4 py-3 flex items-center justify-between sticky top-0 z-10">
+            <span id="station-title">Choose a category</span>
             <button id="station-close" class="w-8 h-8 rounded-full bg-white/20 font-black">×</button>
         </div>
-        <div class="p-4 grid grid-cols-3 gap-2" id="stage-cards"></div>
-        <p id="stage-progress" class="text-center font-bold text-slate-600 pb-2">Completed 0/3 levels</p>
-        <p id="teacher-banner" class="hidden text-center font-black text-amber-700 text-sm pb-1">Teacher mode — pick any level</p>
-        <div class="px-4 pb-5 flex flex-col gap-2">
+        <div class="p-4 flex flex-col gap-4">
+            <div>
+                <p class="font-black text-slate-700 mb-2">範疇 Category</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2" id="category-cards"></div>
+            </div>
+            <div id="name-pick-panel" class="hidden">
+                <p class="font-black text-slate-700 mb-2">學生名字（可多選）</p>
+                <div class="flex flex-wrap gap-2" id="name-pick-list"></div>
+                <p id="name-pick-hint" class="text-sm font-bold text-rose-500 mt-2 hidden">Pick at least 1 name</p>
+            </div>
+            <div>
+                <p class="font-black text-slate-700 mb-2">練習模式 Mode（全部開放）</p>
+                <div class="grid grid-cols-3 gap-2" id="stage-cards"></div>
+                <p id="stage-progress" class="text-center font-bold text-slate-600 pt-2">All levels unlocked</p>
+                <p id="teacher-banner" class="hidden text-center font-black text-amber-700 text-sm pb-1">Teacher mode — pick any level</p>
+            </div>
             <button id="station-enter" class="bubble-btn w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-3 rounded-2xl text-2xl">Enter</button>
-            <button id="teacher-toggle" type="button" class="text-sm font-bold text-slate-400 hover:text-slate-600 py-1">Teacher mode</button>
+            <button id="teacher-toggle" type="button" class="hidden text-sm font-bold text-slate-400 hover:text-slate-600 py-1">Teacher mode</button>
         </div>
     </div>
 </div>
@@ -288,7 +300,7 @@
             <span id="word-emoji" class="text-5xl sm:text-6xl leading-none">🖊️</span>
             <div class="min-w-0">
                 <p id="word-letters" class="text-2xl sm:text-3xl font-black tracking-wide text-slate-800"></p>
-                <p id="letter-hint" class="text-sm font-bold text-indigo-600">Trace: p</p>
+                <p id="letter-hint" class="text-sm font-bold text-indigo-600">Trace: a</p>
                 <p id="copy-sample" class="hidden text-4xl font-black text-slate-800 tracking-wide"></p>
             </div>
         </div>
@@ -341,7 +353,7 @@
             </button>
             <div class="text-base sm:text-xl font-black text-slate-700 bg-white/80 px-4 py-1.5 rounded-full border border-white flex items-center gap-2 cursor-pointer" id="letter-title-box">
                 <span id="emoji-badge" class="text-2xl">🖊️</span>
-                <span id="word-preview" class="tracking-wide">pen</span>
+                <span id="word-preview" class="tracking-wide">a</span>
             </div>
             <button id="next-letter-btn" disabled class="bubble-btn bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2 px-4 rounded-2xl text-base sm:text-lg flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none">
                 <span>Next</span>
@@ -505,6 +517,125 @@
                     [{ x: 28, y: 40 }, { x: 52, y: 52 }, { x: 74, y: 64 }]
                 ]
             },
+            D: {
+                strokes: [
+                    [{ x: 28, y: 16 }, { x: 28, y: 40 }, { x: 28, y: 64 }],
+                    sampleCubicBezier({ x: 28, y: 16 }, { x: 72, y: 16 }, { x: 78, y: 40 }, { x: 28, y: 64 })
+                ]
+            },
+            E: {
+                strokes: [
+                    [{ x: 30, y: 16 }, { x: 30, y: 40 }, { x: 30, y: 64 }],
+                    [{ x: 30, y: 16 }, { x: 52, y: 16 }, { x: 74, y: 16 }],
+                    [{ x: 30, y: 40 }, { x: 48, y: 40 }, { x: 64, y: 40 }],
+                    [{ x: 30, y: 64 }, { x: 52, y: 64 }, { x: 74, y: 64 }]
+                ]
+            },
+            I: {
+                strokes: [
+                    [{ x: 50, y: 16 }, { x: 50, y: 40 }, { x: 50, y: 64 }],
+                    [{ x: 36, y: 16 }, { x: 50, y: 16 }, { x: 64, y: 16 }],
+                    [{ x: 36, y: 64 }, { x: 50, y: 64 }, { x: 64, y: 64 }]
+                ]
+            },
+            J: {
+                strokes: [
+                    [
+                        { x: 62, y: 16 },
+                        { x: 62, y: 48 },
+                        ...sampleCW(48, 52, 14, 0, Math.PI, 14)
+                    ],
+                    [{ x: 48, y: 16 }, { x: 62, y: 16 }, { x: 74, y: 16 }]
+                ]
+            },
+            L: {
+                strokes: [
+                    [{ x: 30, y: 16 }, { x: 30, y: 40 }, { x: 30, y: 64 }],
+                    [{ x: 30, y: 64 }, { x: 52, y: 64 }, { x: 74, y: 64 }]
+                ]
+            },
+            N: {
+                strokes: [
+                    [{ x: 26, y: 16 }, { x: 26, y: 40 }, { x: 26, y: 64 }],
+                    [{ x: 26, y: 16 }, { x: 50, y: 40 }, { x: 74, y: 64 }],
+                    [{ x: 74, y: 16 }, { x: 74, y: 40 }, { x: 74, y: 64 }]
+                ]
+            },
+            O: {
+                strokes: [
+                    sampleCCW(50, 40, 24, -Math.PI / 2, Math.PI * 2, 30)
+                ]
+            },
+            P: {
+                strokes: [
+                    [{ x: 30, y: 16 }, { x: 30, y: 40 }, { x: 30, y: 64 }],
+                    sampleCubicBezier({ x: 30, y: 16 }, { x: 72, y: 16 }, { x: 72, y: 40 }, { x: 30, y: 40 })
+                ]
+            },
+            Q: {
+                strokes: [
+                    sampleCCW(50, 40, 24, -Math.PI / 2, Math.PI * 2, 30),
+                    [{ x: 56, y: 52 }, { x: 66, y: 60 }, { x: 76, y: 66 }]
+                ]
+            },
+            R: {
+                strokes: [
+                    [{ x: 30, y: 16 }, { x: 30, y: 40 }, { x: 30, y: 64 }],
+                    sampleCubicBezier({ x: 30, y: 16 }, { x: 72, y: 16 }, { x: 72, y: 38 }, { x: 30, y: 40 }),
+                    [{ x: 46, y: 40 }, { x: 60, y: 52 }, { x: 74, y: 64 }]
+                ]
+            },
+            T: {
+                strokes: [
+                    [{ x: 50, y: 16 }, { x: 50, y: 40 }, { x: 50, y: 64 }],
+                    [{ x: 26, y: 16 }, { x: 50, y: 16 }, { x: 74, y: 16 }]
+                ]
+            },
+            U: {
+                strokes: [
+                    [
+                        { x: 28, y: 16 },
+                        { x: 28, y: 44 },
+                        ...sampleCCW(50, 44, 22, Math.PI, Math.PI, 16),
+                        { x: 72, y: 16 }
+                    ]
+                ]
+            },
+            V: {
+                strokes: [
+                    [{ x: 24, y: 16 }, { x: 38, y: 40 }, { x: 50, y: 64 }],
+                    [{ x: 50, y: 64 }, { x: 62, y: 40 }, { x: 76, y: 16 }]
+                ]
+            },
+            W: {
+                strokes: [
+                    [{ x: 18, y: 16 }, { x: 28, y: 64 }],
+                    [{ x: 28, y: 64 }, { x: 42, y: 32 }],
+                    [{ x: 42, y: 32 }, { x: 56, y: 64 }],
+                    [{ x: 56, y: 64 }, { x: 72, y: 16 }]
+                ]
+            },
+            X: {
+                strokes: [
+                    [{ x: 26, y: 16 }, { x: 50, y: 40 }, { x: 74, y: 64 }],
+                    [{ x: 74, y: 16 }, { x: 50, y: 40 }, { x: 26, y: 64 }]
+                ]
+            },
+            Y: {
+                strokes: [
+                    [{ x: 26, y: 16 }, { x: 50, y: 40 }],
+                    [{ x: 74, y: 16 }, { x: 50, y: 40 }],
+                    [{ x: 50, y: 40 }, { x: 50, y: 52 }, { x: 50, y: 64 }]
+                ]
+            },
+            Z: {
+                strokes: [
+                    [{ x: 26, y: 16 }, { x: 50, y: 16 }, { x: 74, y: 16 }],
+                    [{ x: 74, y: 16 }, { x: 50, y: 40 }, { x: 26, y: 64 }],
+                    [{ x: 26, y: 64 }, { x: 50, y: 64 }, { x: 74, y: 64 }]
+                ]
+            },
+
             B: {
                 strokes: [
                     [{ x: 28, y: 16 }, { x: 28, y: 40 }, { x: 28, y: 64 }],
@@ -728,13 +859,16 @@
             eraser: "<svg viewBox='0 0 64 64' width='1em' height='1em'><rect x='8' y='28' width='48' height='22' rx='4' fill='#3b82f6'/><rect x='8' y='18' width='48' height='16' rx='3' fill='#e2e8f0'/><rect x='8' y='30' width='48' height='6' fill='#93c5fd'/></svg>",
             glue: "<svg viewBox='0 0 64 64' width='1em' height='1em'><rect x='24' y='6' width='16' height='12' rx='2' fill='#fbbf24'/><rect x='18' y='16' width='28' height='42' rx='6' fill='#1d4ed8'/><rect x='22' y='22' width='20' height='14' rx='2' fill='#93c5fd'/></svg>"
         };
-        const WORDS = [
+        const NAME_BANK = [
             { word: 'Kamila', emoji: '👧' },
             { word: 'Ayan', emoji: '👦' },
-            { word: 'Halima', emoji: '🌸' },
-            { word: 'Clemence', emoji: '⭐' }
+            { word: 'Halima', emoji: '🌸' }
         ];
-        let playerName = '';
+        let WORDS = NAME_BANK.map(w => ({ ...w }));
+        let playerName = 'Guest';
+        let category = 'names'; // lower | upper | names
+        let selectedNames = NAME_BANK.map(w => w.word);
+
         let penColor = '#1d4ed8';
         const PEN_COLORS = [
             { name: 'Blue', hex: '#1d4ed8' },
@@ -752,8 +886,8 @@
         let activeTemplate = null;
         let currentStage = 1;
         let selectedStage = 1;
-        let unlockedStage = 1;
-        let teacherMode = false;
+        let unlockedStage = 3;
+        let teacherMode = true; // temp: all modes open
         let stageDone = { 1: [], 2: [], 3: [] };
         let copyMode = false;
         let fontTrace = false;
@@ -770,22 +904,46 @@
         const PASS_COVERAGE = 0.52;
         const FAIL_OUT_OF_BOUND = 0.35;
         const PASS_ACCURACY = 55;
-        const SAVE_KEY = 'english-name-tracing-v1';
+        const SAVE_KEY = 'english-name-tracing-v2';
         const STAGE_META = [
-            { id: 1, title: 'Level 1-1', tag: 'Aa', tagClass: 'bg-emerald-500', hint: 'Trace each letter of the name' },
-            { id: 2, title: 'Level 1-2', tag: 'Name', tagClass: 'bg-indigo-500', hint: 'Trace the whole name' },
-            { id: 3, title: 'Level 1-3', tag: 'Order', tagClass: 'bg-amber-500', hint: 'Trace letters, then spell the name' }
+            { id: 1, title: 'Level 1-1', tag: 'Letter', tagClass: 'bg-emerald-500', hint: 'Trace letter by letter' },
+            { id: 2, title: 'Level 1-2', tag: 'Whole', tagClass: 'bg-indigo-500', hint: 'Trace the whole item' },
+            { id: 3, title: 'Level 1-3', tag: 'Order', tagClass: 'bg-amber-500', hint: 'Trace cards, then put in order' }
         ];
 
         function loadSave() {
             try {
                 const s = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
-                if (s.unlocked) unlockedStage = s.unlocked;
+                unlockedStage = 3; // temp: no lock
                 if (s.done) stageDone = { 1: s.done[1] || [], 2: s.done[2] || [], 3: s.done[3] || [] };
+                if (Array.isArray(s.selectedNames) && s.selectedNames.length) selectedNames = s.selectedNames;
+                if (s.category === 'lower' || s.category === 'upper' || s.category === 'names') category = s.category;
             } catch (e) {}
         }
         function writeSave() {
-            localStorage.setItem(SAVE_KEY, JSON.stringify({ unlocked: unlockedStage, done: stageDone }));
+            localStorage.setItem(SAVE_KEY, JSON.stringify({
+                unlocked: 3,
+                done: stageDone,
+                category,
+                selectedNames
+            }));
+        }
+
+        function buildWordsFromCategory() {
+            if (category === 'lower') {
+                WORDS = [...'abcdefghijklmnopqrstuvwxyz'].map(ch => ({ word: ch, emoji: ch }));
+            } else if (category === 'upper') {
+                WORDS = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].map(ch => ({ word: ch, emoji: ch }));
+            } else {
+                const pick = selectedNames.length ? selectedNames : NAME_BANK.map(n => n.word);
+                WORDS = NAME_BANK.filter(n => pick.includes(n.word)).map(n => ({ ...n }));
+                if (!WORDS.length) WORDS = NAME_BANK.map(n => ({ ...n }));
+            }
+            const track = document.getElementById('world-track');
+            if (track) {
+                const w = Math.max(1600, CHEST_START + Math.max(WORDS.length - 1, 0) * CHEST_GAP + 700);
+                track.style.width = w + 'px';
+            }
         }
 
         function currentTemplate() {
@@ -1844,7 +2002,7 @@
         let gems = 0;
         let running = true;
         let worldX = 0;
-        const CHEST_GAP = 420;
+        const CHEST_GAP = 300;
         const CHEST_START = 380;
         let worldRaf = 0;
         let inLevel = false;
@@ -2018,9 +2176,7 @@
             if (!stageDone[currentStage].includes(name)) {
                 stageDone[currentStage].push(name);
             }
-            if (stageDone[currentStage].length >= WORDS.length && unlockedStage < currentStage + 1 && currentStage < 3) {
-                unlockedStage = currentStage + 1;
-            }
+            // unlock disabled temporarily — all modes open
             writeSave();
             coins += 1;
             gems += 1;
@@ -2036,41 +2192,85 @@
         }
 
         function renderStation() {
+            const catBox = document.getElementById('category-cards');
+            const cats = [
+                { id: 'lower', title: '細階 a–z', tag: 'abc', tagClass: 'bg-sky-500', hint: 'Lowercase letters' },
+                { id: 'upper', title: '大階 A–Z', tag: 'ABC', tagClass: 'bg-violet-500', hint: 'Uppercase letters' },
+                { id: 'names', title: '學生名字', tag: 'Name', tagClass: 'bg-rose-500', hint: 'Pick student names' }
+            ];
+            catBox.innerHTML = '';
+            cats.forEach(c => {
+                const btn = document.createElement('button');
+                const on = category === c.id;
+                btn.type = 'button';
+                btn.className = `stage-card ${on ? 'selected' : ''}`;
+                btn.innerHTML = `
+                    <p class="font-black text-sm text-slate-700">${c.title}</p>
+                    <span class="stage-tag ${c.tagClass}">${c.tag}</span>
+                    <p class="text-[11px] font-bold text-slate-400 mt-1">${c.hint}</p>
+                `;
+                btn.onclick = () => {
+                    category = c.id;
+                    renderStation();
+                };
+                catBox.appendChild(btn);
+            });
+
+            const namePanel = document.getElementById('name-pick-panel');
+            const nameList = document.getElementById('name-pick-list');
+            const nameHint = document.getElementById('name-pick-hint');
+            if (category === 'names') {
+                namePanel.classList.remove('hidden');
+                nameList.innerHTML = '';
+                NAME_BANK.forEach(n => {
+                    const on = selectedNames.includes(n.word);
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = `bubble-btn px-3 py-2 rounded-2xl font-black text-base border-2 ${on ? 'bg-rose-500 text-white border-rose-600' : 'bg-white text-slate-700 border-slate-200'}`;
+                    b.innerHTML = `${n.emoji} ${n.word}`;
+                    b.onclick = () => {
+                        if (on) selectedNames = selectedNames.filter(x => x !== n.word);
+                        else selectedNames = [...selectedNames, n.word];
+                        renderStation();
+                    };
+                    nameList.appendChild(b);
+                });
+                nameHint.classList.toggle('hidden', selectedNames.length > 0);
+            } else {
+                namePanel.classList.add('hidden');
+            }
+
             const box = document.getElementById('stage-cards');
             box.innerHTML = '';
             STAGE_META.forEach(meta => {
-                const locked = !teacherMode && meta.id > unlockedStage;
-                const done = (stageDone[meta.id] || []).length >= WORDS.length;
-                const selected = meta.id === selectedStage && !locked;
+                const doneList = stageDone[meta.id] || [];
+                // stars only decorative while unlock off
+                const done = false;
+                const selected = meta.id === selectedStage;
                 const card = document.createElement('button');
-                card.className = `stage-card ${locked ? 'locked' : ''} ${selected ? 'selected' : ''}`;
-                card.disabled = locked;
-                const stars = done
-                    ? '<span class="text-amber-400 text-lg">★★★</span>'
-                    : '<span class="text-slate-300 text-lg">☆☆☆</span>';
+                card.type = 'button';
+                card.className = `stage-card ${selected ? 'selected' : ''}`;
+                card.disabled = false;
+                const stars = '<span class="text-slate-300 text-lg">☆☆☆</span>';
                 card.innerHTML = `
                     <p class="font-black text-sm text-slate-700">${meta.title}</p>
-                    ${locked ? '<i class="fa-solid fa-lock text-3xl text-slate-400 my-2"></i>' : stars}
+                    ${stars}
                     <span class="stage-tag ${meta.tagClass}">${meta.tag}</span>
                 `;
                 card.onclick = () => {
-                    if (locked) return;
                     selectedStage = meta.id;
                     renderStation();
                 };
                 box.appendChild(card);
             });
-            const finished = STAGE_META.filter(m => (stageDone[m.id] || []).length >= WORDS.length).length;
-            document.getElementById('stage-progress').textContent = `Completed ${finished}/3 levels`;
-            const tb = document.getElementById('teacher-banner');
-            const tt = document.getElementById('teacher-toggle');
-            if (tb) tb.classList.toggle('hidden', !teacherMode);
-            if (tt) {
-                tt.textContent = teacherMode ? 'Teacher mode: ON' : 'Teacher mode';
-                tt.className = teacherMode
-                    ? 'text-sm font-black text-amber-700 py-1'
-                    : 'text-sm font-bold text-slate-400 hover:text-slate-600 py-1';
-            }
+
+            const label = category === 'lower' ? '細階 a–z' : category === 'upper' ? '大階 A–Z' : '學生名字';
+            document.getElementById('station-title').textContent = label;
+            document.getElementById('stage-progress').textContent = 'All levels unlocked · no lock';
+            document.getElementById('teacher-banner').classList.add('hidden');
+            const enter = document.getElementById('station-enter');
+            enter.disabled = category === 'names' && selectedNames.length < 1;
+            enter.classList.toggle('opacity-40', enter.disabled);
         }
 
         function showStation() {
@@ -2081,8 +2281,14 @@
         }
 
         function enterStage() {
-            if (!teacherMode && selectedStage > unlockedStage) return;
+            if (category === 'names' && selectedNames.length < 1) {
+                document.getElementById('name-pick-hint')?.classList.remove('hidden');
+                return;
+            }
             currentStage = selectedStage;
+            unlockedStage = 3;
+            buildWordsFromCategory();
+            writeSave();
             document.getElementById('station-modal').classList.add('hidden');
             resetWorld();
             running = true;
@@ -2175,8 +2381,9 @@
         });
 
         function applyPlayer() {
+            if (!playerName) playerName = 'Guest';
             const hello = document.getElementById('player-hello');
-            if (hello) hello.textContent = playerName ? `Hello, ${playerName}!` : 'Hello!';
+            if (hello) hello.textContent = `Hello, ${playerName}!`;
             updateWorldHud();
         }
 
@@ -2200,32 +2407,28 @@
         }
 
         function tryEnableStart() {
-            const name = document.getElementById('player-name').value.trim();
-            document.getElementById('player-start').disabled = name.length < 1;
+            const start = document.getElementById('player-start');
+            if (start) start.disabled = false;
         }
 
         window.onload = () => {
             loadSave();
-            selectedStage = unlockedStage;
+            unlockedStage = 3;
+            selectedStage = 1;
+            buildWordsFromCategory();
             buildWorld();
             updateWorldHud();
             tickWorld();
             running = false;
             initPenSwatches();
-            const nameInput = document.getElementById('player-name');
-            nameInput.addEventListener('input', tryEnableStart);
-            nameInput.addEventListener('keydown', e => {
-                if (e.key === 'Enter' && !document.getElementById('player-start').disabled) {
-                    document.getElementById('player-start').click();
-                }
-            });
+            applyPlayer();
             document.getElementById('player-start').addEventListener('click', () => {
-                playerName = nameInput.value.trim();
-                if (!playerName) return;
+                playerName = 'Guest';
                 applyPlayer();
                 document.getElementById('player-setup').classList.add('hidden');
                 showStation();
             });
+            tryEnableStart();
         };
     </script>
 </body>
