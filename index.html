@@ -1,0 +1,2232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- BUILD: english-name-tracing-v1.1 brand=top-left-school footer=ken-logo names=Kamila,Ayan,Halima,Clemence -->
+    <title>English Name Tracing｜將軍澳培智學校</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,700&family=Fredoka:wght@500;700&display=swap');
+
+        body {
+            font-family: 'Comic Neue', 'Chalkboard SE', 'Comic Sans MS', 'Fredoka', cursive, sans-serif;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .school-brand-tl {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            pointer-events: none;
+            padding: 0.35rem 0.65rem 0.35rem 0.35rem;
+            border-radius: 1rem;
+            background: rgba(255,255,255,0.94);
+            border: 2px solid rgba(255,255,255,0.98);
+            box-shadow: 0 8px 20px rgba(15,23,42,0.14);
+        }
+        .school-brand-tl img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .school-brand-tl .school-name {
+            font-weight: 900;
+            font-size: 0.95rem;
+            line-height: 1.1;
+            color: #0f172a;
+        }
+        .school-brand-tl .school-sub {
+            font-weight: 800;
+            font-size: 0.72rem;
+            line-height: 1.1;
+            color: #0369a1;
+            margin-top: 2px;
+        }
+
+        #site-footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 95;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(15, 23, 42, 0.82);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            pointer-events: none;
+            backdrop-filter: blur(6px);
+        }
+        #site-footer img.ken-logo {
+            height: 22px;
+            width: auto;
+            border-radius: 999px;
+            background: #fff;
+        }
+        body.has-site-footer #world-view,
+        body.has-site-footer #trace-view {
+            padding-bottom: 2.1rem;
+        }
+        #trace-view {
+            box-sizing: border-box;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #e0f2fe 0%, #fbcfe8 50%, #fef08a 100%);
+        }
+
+        .bubble-btn {
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+            font-family: 'Comic Neue', 'Chalkboard SE', 'Comic Sans MS', sans-serif;
+        }
+
+        .bubble-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 4px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .smooth-scroll {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+
+        .smooth-scroll::-webkit-scrollbar { height: 6px; }
+        .smooth-scroll::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.6);
+            border-radius: 8px;
+        }
+        .smooth-scroll::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.5);
+            border-radius: 8px;
+        }
+
+        @keyframes modalShake {
+            0%, 100% { transform: translateX(0) scale(1); }
+            20%, 60% { transform: translateX(-12px) scale(1.02); }
+            40%, 80% { transform: translateX(12px) scale(1.02); }
+        }
+
+        .animate-shake { animation: modalShake 0.45s ease-in-out; }
+
+        #world-view { background: linear-gradient(#4db8e8 0%, #87ceeb 45%, #b8e0a8 70%, #7cb342 70%, #7cb342 78%, #8d6e63 78%, #6d4c41 100%); }
+        .cloud { background: #fff; border-radius: 40px; opacity: 0.9; }
+        .tree { position: absolute; bottom: 22%; width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-bottom: 70px solid #43a047; }
+        .tree::after { content: ''; position: absolute; left: -10px; top: 40px; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 36px solid #2e7d32; }
+        .hud-btn { width: 48px; height: 48px; border-radius: 50%; background: #1e3a5f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 0 #0d2137; }
+        @keyframes walk-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes legs { 0%,100% { transform: rotate(-18deg); } 50% { transform: rotate(18deg); } }
+        .hero-bob { animation: walk-bob 0.4s ease-in-out infinite; }
+        .hero-paused { animation: none; }
+        .chest-box { width: 54px; height: 42px; background: linear-gradient(#a16207, #78350f); border: 3px solid #451a03; border-radius: 6px; box-shadow: 0 4px 0 #3f2a14; }
+        .chest-box.open { background: linear-gradient(#fbbf24, #d97706); }
+        .coin-star { width: 36px; height: 36px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fde047, #eab308); border: 3px solid #a16207; }
+        .flagpole { position: absolute; bottom: 18%; width: 90px; height: 230px; pointer-events: none; }
+        .flag-cloth { position: absolute; top: 10px; left: 18px; transition: top 1.1s ease-in; }
+        .flagpole.dropped .flag-cloth { top: 148px; }
+        #cheer-banner { background: rgba(0,0,0,0.18); }
+        .stage-card { border: 2px solid #e2e8f0; border-radius: 1rem; padding: 0.75rem 0.5rem; text-align: center; background: #fff; min-height: 132px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+        .stage-card.selected { background: #f1f5f9; border-color: #94a3b8; }
+        .stage-card.locked { background: #f1f5f9; color: #94a3b8; }
+        .stage-tag { font-size: 12px; font-weight: 900; color: #fff; border-radius: 999px; padding: 2px 8px; }
+        .order-tile { width: 64px; height: 74px; border-radius: 12px; border: 3px solid #cbd5e1; background: #fff; font-weight: 900; font-size: 28px; font-family: 'Comic Sans MS','Comic Neue',cursive; overflow: hidden; padding: 2px; display: flex; align-items: center; justify-content: center; }
+        .order-slot { width: 64px; height: 74px; border-radius: 12px; border: 3px dashed #94a3b8; background: #f8fafc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .pen-swatch { width: 48px; height: 48px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 0 3px #cbd5e1; }
+        .pen-swatch.selected { box-shadow: 0 0 0 4px #0f172a; transform: scale(1.08); }
+        #player-setup, #player-setup input { touch-action: auto; user-select: text; -webkit-user-select: text; }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden has-site-footer">
+
+<div class="school-brand-tl" id="global-school-brand" aria-label="將軍澳培智學校">
+    <img class="school-logo" src="https://www.puichi.edu.hk/it-school/php/webcms/files/upload/tinymce//1a__pui_chi_logo_png_1791177564.png" alt="將軍澳培智學校校徽" width="44" height="44" decoding="async">
+    <div>
+        <p class="school-name">將軍澳培智學校</p>
+        <p class="school-sub">English Names</p>
+    </div>
+</div>
+
+<div id="player-setup" class="absolute inset-0 z-[80] flex items-center justify-center bg-black/50 p-3">
+    <div class="bg-white rounded-3xl w-full max-w-[440px] overflow-hidden shadow-2xl p-5 flex flex-col gap-4">
+        <div class="flex items-center justify-center gap-2">
+            <img class="school-logo w-10 h-10 rounded-xl bg-white object-contain border border-slate-200" src="https://www.puichi.edu.hk/it-school/php/webcms/files/upload/tinymce//1a__pui_chi_logo_png_1791177564.png" alt="將軍澳培智學校校徽" width="40" height="40" decoding="async">
+            <p class="font-black text-sky-700 text-sm sm:text-base">將軍澳培智學校</p>
+        </div>
+        <h2 class="text-2xl font-black text-slate-800 text-center">What is your name?</h2>
+        <input id="player-name" type="text" maxlength="18" autocomplete="off" spellcheck="false" placeholder="Type your name" class="w-full border-4 border-indigo-200 rounded-2xl px-4 py-3 text-xl font-black text-center text-slate-800">
+        <p class="font-black text-slate-700 text-center">Pick a pen colour</p>
+        <div id="pen-swatches" class="flex flex-wrap justify-center gap-3"></div>
+        <button id="player-start" disabled class="bubble-btn w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-3 rounded-2xl text-2xl disabled:opacity-40 disabled:pointer-events-none">Start</button>
+    </div>
+</div>
+
+<div id="station-modal" class="hidden absolute inset-0 z-[70] flex items-center justify-center bg-black/45 p-3">
+    <div class="bg-white rounded-3xl w-full max-w-[440px] overflow-hidden shadow-2xl">
+        <div class="bg-amber-700 text-white font-black text-xl sm:text-2xl px-4 py-3 flex items-center justify-between">
+            <span>Names — Write our names</span>
+            <button id="station-close" class="w-8 h-8 rounded-full bg-white/20 font-black">×</button>
+        </div>
+        <div class="p-4 grid grid-cols-3 gap-2" id="stage-cards"></div>
+        <p id="stage-progress" class="text-center font-bold text-slate-600 pb-2">Completed 0/3 levels</p>
+        <p id="teacher-banner" class="hidden text-center font-black text-amber-700 text-sm pb-1">Teacher mode — pick any level</p>
+        <div class="px-4 pb-5 flex flex-col gap-2">
+            <button id="station-enter" class="bubble-btn w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-3 rounded-2xl text-2xl">Enter</button>
+            <button id="teacher-toggle" type="button" class="text-sm font-bold text-slate-400 hover:text-slate-600 py-1">Teacher mode</button>
+        </div>
+    </div>
+</div>
+
+<div id="world-view" class="absolute inset-0 z-30 overflow-hidden">
+    <div class="absolute top-[4.6rem] left-3 flex gap-2 z-40">
+        <button id="world-home" class="hud-btn" title="Home"><i class="fa-solid fa-house"></i></button>
+        <button id="world-restart" class="hud-btn" title="Restart"><i class="fa-solid fa-rotate-right"></i></button>
+        <button id="world-music" class="hud-btn" title="Music"><i class="fa-solid fa-music" id="world-music-icon"></i></button>
+        <button id="world-pause" class="hud-btn" title="Pause"><i class="fa-solid fa-pause" id="world-pause-icon"></i></button>
+    </div>
+    <div class="absolute top-3 left-1/2 -translate-x-1/2 text-center z-40">
+        <p id="world-stage" class="text-white font-black text-xl drop-shadow">Level 1-1</p>
+        <p id="world-stage-name" class="text-amber-200 font-black text-lg drop-shadow">Kamila</p>
+        <p id="world-player" class="text-white font-bold text-sm drop-shadow"></p>
+    </div>
+    <div class="absolute top-3 right-3 z-40 flex flex-col gap-1">
+        <div class="bg-slate-800/80 text-white font-black px-3 py-1 rounded-xl flex items-center gap-2"><span>⭐</span><span id="hud-coins">0</span></div>
+        <div class="bg-slate-800/80 text-white font-black px-3 py-1 rounded-xl flex items-center gap-2"><span>💎</span><span id="hud-gems">0</span></div>
+    </div>
+    <div class="absolute top-8 right-28 w-16 h-16 rounded-full bg-yellow-300 shadow-[0_0_40px_#fde047]" id="sun"></div>
+    <div class="cloud absolute w-28 h-10 top-16 left-[20%]"></div>
+    <div class="cloud absolute w-36 h-12 top-24 left-[55%]"></div>
+    <div class="cloud absolute w-24 h-8 top-12 left-[78%]"></div>
+
+    <div id="world-track" class="absolute left-0 top-0 h-full" style="width:2600px">
+        <div id="trees-layer" class="absolute inset-0"></div>
+        <div id="chests-layer" class="absolute inset-0"></div>
+        <div id="flags-layer" class="absolute inset-0"></div>
+    </div>
+        <div id="hero" class="hero-bob absolute z-20" style="left:12%; bottom:18%; width:56px; height:72px;">
+            <svg viewBox="0 0 56 72" width="56" height="72">
+                <ellipse cx="28" cy="68" rx="16" ry="4" fill="#000" opacity="0.2"/>
+                <rect x="18" y="38" width="20" height="22" rx="6" fill="#5d8a3d"/>
+                <rect x="6" y="40" width="14" height="16" rx="4" fill="#d97706"/>
+                <circle cx="28" cy="28" r="12" fill="#f5c7a1"/>
+                <path d="M16 28 Q28 8 40 28 Q28 22 16 28" fill="#3f6b2a"/>
+                <circle cx="24" cy="28" r="1.8" fill="#1e293b"/>
+                <circle cx="32" cy="28" r="1.8" fill="#1e293b"/>
+                <path d="M24 34 Q28 36 32 34" stroke="#1e293b" stroke-width="1.2" fill="none"/>
+                <rect x="20" y="58" width="7" height="12" rx="3" fill="#78716c"/>
+                <rect x="29" y="58" width="7" height="12" rx="3" fill="#78716c"/>
+            </svg>
+        </div>
+    <div id="cheer-banner" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center gap-2">
+        <p class="text-7xl">🎉</p>
+        <p id="cheer-text" class="text-white font-black text-4xl sm:text-5xl drop-shadow-lg">Yay!</p>
+        <p id="cheer-word" class="text-amber-200 font-black text-2xl drop-shadow"></p>
+    </div>
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-40">
+        <p class="bg-green-900/50 text-white font-bold px-6 py-3 rounded-2xl text-lg">Run to a chest to write a name</p>
+    </div>
+</div>
+
+<div id="trace-view" class="hidden h-screen w-screen overflow-hidden flex flex-col justify-between items-center p-2 sm:p-4 gradient-bg">
+
+    <header id="trace-header" class="w-full max-w-4xl flex justify-between items-center bg-white/80 backdrop-blur-md rounded-3xl p-2.5 sm:p-4 shadow-lg border-2 border-white/90 mt-12 sm:mt-14">
+        <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div class="min-w-0">
+                <h1 class="text-lg sm:text-2xl font-black text-slate-800 leading-tight truncate">English Names</h1>
+                <p id="player-hello" class="text-xs sm:text-sm text-slate-500 font-bold hidden sm:block">Hello!</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 bg-slate-100/90 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl border border-slate-200 min-w-[120px] sm:min-w-[160px] justify-center">
+            <span class="text-slate-500 font-extrabold text-xs sm:text-sm">Status:</span>
+            <span id="score-display" class="text-base sm:text-2xl font-black text-indigo-600">Ready</span>
+        </div>
+
+        <div class="flex gap-2">
+            <button id="speaker-btn" class="bubble-btn bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 sm:py-2.5 px-3 sm:px-4 rounded-2xl text-base sm:text-lg flex items-center justify-center gap-1.5" title="Pronounce Letter">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+            <button id="sound-toggle" class="bubble-btn bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 sm:py-2.5 px-3 sm:px-4 rounded-2xl text-base sm:text-lg flex items-center justify-center">
+                <i class="fa-solid fa-music" id="sound-icon"></i>
+            </button>
+            <button id="undo-btn" class="hidden bubble-btn bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 sm:py-2.5 px-3 sm:px-4 rounded-2xl text-base sm:text-lg flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span class="hidden sm:inline">Back</span>
+            </button>
+            <button id="reset-btn" class="bubble-btn bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 sm:py-2.5 px-3 sm:px-4 rounded-2xl text-base sm:text-lg flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span class="hidden sm:inline">Reset</span>
+            </button>
+        </div>
+    </header>
+
+    <main id="trace-main" class="w-full max-w-4xl flex-1 flex flex-col items-center justify-center my-1 sm:my-2 relative min-h-0">
+        <div id="word-banner" class="w-full max-w-[420px] mb-1 flex items-center justify-center gap-3 bg-white/80 rounded-3xl px-3 py-2 border-2 border-white">
+            <span id="word-emoji" class="text-5xl sm:text-6xl leading-none">🖊️</span>
+            <div class="min-w-0">
+                <p id="word-letters" class="text-2xl sm:text-3xl font-black tracking-wide text-slate-800"></p>
+                <p id="letter-hint" class="text-sm font-bold text-indigo-600">Trace: p</p>
+                <p id="copy-sample" class="hidden text-4xl font-black text-slate-800 tracking-wide"></p>
+            </div>
+        </div>
+        <div id="trace-card" class="glass-card rounded-3xl p-2 sm:p-3 relative flex items-center justify-center w-full max-w-[420px] aspect-square min-h-0">
+            <canvas id="tracing-canvas" class="w-full h-full rounded-2xl cursor-crosshair touch-none bg-white"></canvas>
+
+            <div id="try-again-modal" class="hidden absolute inset-0 bg-black/40 backdrop-blur-md rounded-3xl flex flex-col items-center justify-center p-6 text-center z-20">
+                <div id="try-again-box" class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-rose-400 max-w-xs w-full flex flex-col items-center gap-3">
+                    <div class="w-18 h-18 bg-rose-100 rounded-full flex items-center justify-center text-rose-500 text-4xl p-4 shadow-inner">
+                        <i class="fa-solid fa-face-frown"></i>
+                    </div>
+                    <h2 class="text-3xl font-black text-rose-600">Try Again! 💪</h2>
+                    <p id="try-again-reason" class="text-slate-600 font-bold text-sm">Follow 1, 2, 3 and stay on the dots!</p>
+                    <button id="undo-retry-btn" class="hidden bubble-btn w-full bg-sky-500 hover:bg-sky-600 text-white font-black py-3 rounded-2xl text-xl mt-2">
+                        Back <i class="fa-solid fa-rotate-left ml-2"></i>
+                    </button>
+                    <button id="retry-btn" class="bubble-btn w-full bg-rose-500 hover:bg-rose-600 text-white font-black py-3 rounded-2xl text-xl">
+                        Try Again <i class="fa-solid fa-rotate-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="review-bar" class="hidden w-full max-w-[420px] mt-2 bg-white/95 border-4 border-yellow-300 rounded-3xl p-3 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2 min-w-0">
+                <span class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-white text-lg shrink-0"><i class="fa-solid fa-star"></i></span>
+                <div>
+                    <p id="review-caption" class="font-black text-slate-800 leading-tight">Your letter!</p>
+                    <p class="text-sm font-bold text-indigo-600"><span id="modal-score">100%</span></p>
+                </div>
+            </div>
+            <button id="next-btn" disabled class="bubble-btn bg-emerald-500 hover:bg-emerald-600 text-white font-black py-2.5 px-4 rounded-2xl text-lg shrink-0 disabled:opacity-40 disabled:pointer-events-none">
+                Next <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </div>
+
+        <div id="order-view" class="hidden w-full max-w-3xl mt-2 bg-white/95 border-4 border-indigo-200 rounded-3xl p-4 flex flex-col items-center gap-3">
+            <p class="font-black text-slate-800 text-xl">Put the letters in order</p>
+            <p id="order-target" class="text-indigo-600 font-bold"></p>
+            <div id="order-slots" class="flex flex-wrap justify-center gap-2"></div>
+            <p class="text-sm font-bold text-slate-500">Tap a card</p>
+            <div id="order-bank" class="flex flex-wrap justify-center gap-2"></div>
+            <button id="order-clear" class="bubble-btn bg-slate-200 text-slate-700 font-black py-2 px-4 rounded-2xl">Clear</button>
+        </div>
+
+        <div id="trace-nav" class="flex items-center justify-between w-full max-w-[420px] mt-2 px-1">
+            <button id="prev-letter-btn" class="bubble-btn bg-white hover:bg-slate-100 text-indigo-600 font-black py-2 px-4 rounded-2xl text-base sm:text-lg border-2 border-indigo-200 flex items-center gap-2">
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Prev</span>
+            </button>
+            <div class="text-base sm:text-xl font-black text-slate-700 bg-white/80 px-4 py-1.5 rounded-full border border-white flex items-center gap-2 cursor-pointer" id="letter-title-box">
+                <span id="emoji-badge" class="text-2xl">🖊️</span>
+                <span id="word-preview" class="tracking-wide">pen</span>
+            </div>
+            <button id="next-letter-btn" disabled class="bubble-btn bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2 px-4 rounded-2xl text-base sm:text-lg flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none">
+                <span>Next</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <footer class="w-full max-w-4xl bg-white/80 backdrop-blur-md rounded-3xl p-2 sm:p-3 shadow-lg border-2 border-white/90 flex items-center gap-1 sm:gap-2">
+        <button id="scroll-left-btn" class="bubble-btn w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-2xl flex items-center justify-center shrink-0 font-black text-lg sm:text-xl">
+            <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <div class="flex items-center gap-2 overflow-x-auto py-1 px-1 smooth-scroll flex-1" id="letter-selector"></div>
+        <button id="scroll-right-btn" class="bubble-btn w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-2xl flex items-center justify-center shrink-0 font-black text-lg sm:text-xl">
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
+    </footer>
+</div>
+
+<footer id="site-footer" role="contentinfo">
+    <img class="ken-logo" src="assets/ken-cheng-logo.png" alt="Ken Cheng logo" width="22" height="22" decoding="async" onerror="this.onerror=null;this.src='https://i.imgur.com/OQwyeIV.png'">
+    <span>© Ken Cheng 製作 · 將軍澳培智學校</span>
+</footer>
+
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        class SoundEffects {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            speakText(text, cancel = true, onend) {
+                if (!('speechSynthesis' in window)) return;
+                if (cancel) window.speechSynthesis.cancel();
+                const say = text.length === 1 ? text.toLowerCase() : text;
+                const utterance = new SpeechSynthesisUtterance(say);
+                utterance.rate = 0.88;
+                utterance.pitch = 1.1;
+                utterance.lang = 'en-US';
+                if (onend) utterance.onend = onend;
+                window.speechSynthesis.speak(utterance);
+            }
+
+            speakLetter(letter) {
+                this.speakText(letter);
+            }
+
+            speakWord(word) {
+                this.speakText(word);
+            }
+
+            speakWordThenLetter(word, letter) {
+                this.speakText(word, true, () => this.speakText(letter, false));
+            }
+
+            playTone(freq, type = 'sine', duration = 0.08) {
+                if (!this.enabled) return;
+                this.init();
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch (e) {}
+            }
+
+            playSuccess() {
+                if (!this.enabled) return;
+                [261.63, 329.63, 392.00, 523.25].forEach((freq, idx) => {
+                    setTimeout(() => this.playTone(freq, 'triangle', 0.25), idx * 100);
+                });
+            }
+
+            playError() {
+                if (!this.enabled) return;
+                this.playTone(180, 'sawtooth', 0.22);
+                setTimeout(() => this.playTone(130, 'sawtooth', 0.28), 120);
+            }
+        }
+
+        const sound = new SoundEffects();
+
+        function sampleCubicBezier(p0, p1, p2, p3, segments = 24) {
+            const points = [];
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const cx = 3 * (p1.x - p0.x);
+                const bx = 3 * (p2.x - p1.x) - cx;
+                const ax = p3.x - p0.x - cx - bx;
+                const cy = 3 * (p1.y - p0.y);
+                const by = 3 * (p2.y - p1.y) - cy;
+                const ay = p3.y - p0.y - cy - by;
+                points.push({
+                    x: ax * Math.pow(t, 3) + bx * Math.pow(t, 2) + cx * t + p0.x,
+                    y: ay * Math.pow(t, 3) + by * Math.pow(t, 2) + cy * t + p0.y
+                });
+            }
+            return points;
+        }
+
+        function sampleArc(cx, cy, radius, startAngle, endAngle, segments = 24) {
+            const points = [];
+            for (let i = 0; i <= segments; i++) {
+                const angle = startAngle + (endAngle - startAngle) * (i / segments);
+                points.push({
+                    x: cx + radius * Math.cos(angle),
+                    y: cy + radius * Math.sin(angle)
+                });
+            }
+            return points;
+        }
+
+        // Canvas y-down: 0 = 3 o'clock, increasing = clockwise.
+        function sampleCCW(cx, cy, r, startAng, sweep = Math.PI * 2, segments = 24) {
+            return sampleArc(cx, cy, r, startAng, startAng - Math.abs(sweep), segments);
+        }
+        function sampleCW(cx, cy, r, startAng, sweep = Math.PI * 2, segments = 24) {
+            return sampleArc(cx, cy, r, startAng, startAng + Math.abs(sweep), segments);
+        }
+
+        // Lowercase stroke order + arrow direction from the classroom worksheet.
+        // Body y48–78, ascenders ~16, descenders ~96.
+        const LETTER_TEMPLATES = {
+
+            A: {
+                strokes: [
+                    [{ x: 50, y: 16 }, { x: 36, y: 40 }, { x: 22, y: 64 }],
+                    [{ x: 50, y: 16 }, { x: 64, y: 40 }, { x: 78, y: 64 }],
+                    [{ x: 34, y: 44 }, { x: 50, y: 44 }, { x: 66, y: 44 }]
+                ]
+            },
+            C: {
+                strokes: [
+                    sampleCCW(50, 40, 24, -0.45, Math.PI * 1.55, 28)
+                ]
+            },
+            H: {
+                strokes: [
+                    [{ x: 28, y: 16 }, { x: 28, y: 40 }, { x: 28, y: 64 }],
+                    [{ x: 72, y: 16 }, { x: 72, y: 40 }, { x: 72, y: 64 }],
+                    [{ x: 28, y: 40 }, { x: 50, y: 40 }, { x: 72, y: 40 }]
+                ]
+            },
+            K: {
+                strokes: [
+                    [{ x: 28, y: 16 }, { x: 28, y: 40 }, { x: 28, y: 64 }],
+                    [{ x: 28, y: 40 }, { x: 52, y: 28 }, { x: 74, y: 16 }],
+                    [{ x: 28, y: 40 }, { x: 52, y: 52 }, { x: 74, y: 64 }]
+                ]
+            },
+            B: {
+                strokes: [
+                    [{ x: 28, y: 16 }, { x: 28, y: 40 }, { x: 28, y: 64 }],
+                    sampleCubicBezier({ x: 28, y: 16 }, { x: 72, y: 16 }, { x: 72, y: 40 }, { x: 28, y: 40 }),
+                    sampleCubicBezier({ x: 28, y: 40 }, { x: 76, y: 40 }, { x: 76, y: 64 }, { x: 28, y: 64 })
+                ]
+            },
+            F: {
+                strokes: [
+                    [{ x: 28, y: 16 }, { x: 28, y: 40 }, { x: 28, y: 64 }],
+                    [{ x: 28, y: 16 }, { x: 52, y: 16 }, { x: 74, y: 16 }],
+                    [{ x: 28, y: 40 }, { x: 48, y: 40 }, { x: 64, y: 40 }]
+                ]
+            },
+            G: {
+                strokes: [
+                    sampleCCW(48, 40, 22, -0.45, Math.PI * 1.65, 26),
+                    [{ x: 70, y: 40 }, { x: 58, y: 40 }, { x: 48, y: 40 }],
+                    [{ x: 70, y: 40 }, { x: 70, y: 52 }, { x: 70, y: 64 }]
+                ]
+            },
+            M: {
+                strokes: [
+                    [{ x: 22, y: 16 }, { x: 22, y: 40 }, { x: 22, y: 64 }],
+                    [{ x: 22, y: 16 }, { x: 36, y: 40 }, { x: 50, y: 64 }],
+                    [{ x: 50, y: 64 }, { x: 64, y: 40 }, { x: 78, y: 16 }],
+                    [{ x: 78, y: 16 }, { x: 78, y: 40 }, { x: 78, y: 64 }]
+                ]
+            },
+            S: {
+                strokes: [
+                    [
+                        ...sampleCubicBezier({ x: 68, y: 24 }, { x: 42, y: 14 }, { x: 26, y: 28 }, { x: 42, y: 40 }, 16),
+                        ...sampleCubicBezier({ x: 42, y: 40 }, { x: 72, y: 52 }, { x: 68, y: 64 }, { x: 32, y: 64 }, 16)
+                    ]
+                ]
+            },
+            a: {
+                strokes: [
+                    sampleCCW(44, 52, 15, -0.2, Math.PI * 2, 26),
+                    [{ x: 59, y: 40 }, { x: 59, y: 52 }, { x: 59, y: 64 }]
+                ]
+            },
+            b: {
+                strokes: [
+                    [{ x: 34, y: 16 }, { x: 34, y: 40 }, { x: 34, y: 64 }],
+                    sampleCubicBezier({ x: 34, y: 40 }, { x: 70, y: 40 }, { x: 70, y: 64 }, { x: 34, y: 64 })
+                ]
+            },
+            c: {
+                strokes: [
+                    sampleCCW(52, 52, 16, -0.45, Math.PI * 1.55, 26)
+                ]
+            },
+            d: {
+                strokes: [
+                    [{ x: 62, y: 16 }, { x: 62, y: 40 }, { x: 62, y: 64 }],
+                    sampleCubicBezier({ x: 62, y: 40 }, { x: 26, y: 40 }, { x: 26, y: 64 }, { x: 62, y: 64 })
+                ]
+            },
+            e: {
+                strokes: [
+                    [{ x: 42, y: 52 }, { x: 52, y: 52 }, { x: 62, y: 52 }],
+                    sampleCCW(50, 52, 12, 0, Math.PI * 1.7, 24)
+                ]
+            },
+            f: {
+                strokes: [
+                    [
+                        ...sampleCCW(48, 25, 12, -Math.PI / 2, Math.PI / 2, 12),
+                        { x: 36, y: 28 },
+                        { x: 36, y: 64 }
+                    ],
+                    [{ x: 26, y: 40 }, { x: 36, y: 40 }, { x: 54, y: 40 }]
+                ]
+            },
+            g: {
+                strokes: [
+                    sampleCCW(46, 49.6, 14, -0.2, Math.PI * 2, 24),
+                    [
+                        { x: 60, y: 38.5 },
+                        { x: 60, y: 64 },
+                        ...sampleCW(48, 66.7, 12, 0.1, Math.PI * 0.9, 12)
+                    ]
+                ]
+            },
+            h: {
+                strokes: [
+                    [{ x: 32, y: 16 }, { x: 32, y: 40 }, { x: 32, y: 64 }],
+                    sampleCubicBezier({ x: 32, y: 43.2 }, { x: 60, y: 35.5 }, { x: 64, y: 48 }, { x: 64, y: 64 })
+                ]
+            },
+            i: {
+                strokes: [
+                    [{ x: 50, y: 40 }, { x: 50, y: 52 }, { x: 50, y: 64 }],
+                    [{ x: 50, y: 29 }]
+                ]
+            },
+            j: {
+                strokes: [
+                    [
+                        { x: 54, y: 40 },
+                        { x: 54, y: 64 },
+                        ...sampleCW(42, 64, 12, 0, Math.PI, 12)
+                    ],
+                    [{ x: 54, y: 29 }]
+                ]
+            },
+            k: {
+                strokes: [
+                    [{ x: 34, y: 16 }, { x: 34, y: 40 }, { x: 34, y: 64 }],
+                    [{ x: 34, y: 46.4 }, { x: 50, y: 40 }, { x: 62, y: 40 }],
+                    [{ x: 34, y: 46.4 }, { x: 50, y: 56 }, { x: 64, y: 64 }]
+                ]
+            },
+            l: {
+                strokes: [
+                    [{ x: 50, y: 16 }, { x: 50, y: 40 }, { x: 50, y: 64 }]
+                ]
+            },
+            m: {
+                strokes: [
+                    [{ x: 22, y: 40 }, { x: 22, y: 52 }, { x: 22, y: 64 }],
+                    sampleCubicBezier({ x: 22, y: 43.2 }, { x: 38, y: 34 }, { x: 42, y: 46.4 }, { x: 42, y: 64 }),
+                    sampleCubicBezier({ x: 42, y: 43.2 }, { x: 58, y: 34 }, { x: 62, y: 46.4 }, { x: 62, y: 64 })
+                ]
+            },
+            n: {
+                strokes: [
+                    [{ x: 32, y: 40 }, { x: 32, y: 52 }, { x: 32, y: 64 }],
+                    sampleCubicBezier({ x: 32, y: 43.2 }, { x: 58, y: 34 }, { x: 62, y: 46.4 }, { x: 62, y: 64 })
+                ]
+            },
+            o: {
+                strokes: [
+                    sampleCCW(50, 52, 16, -Math.PI / 2, Math.PI * 2, 28)
+                ]
+            },
+            p: {
+                strokes: [
+                    [{ x: 34, y: 40 }, { x: 34, y: 64 }, { x: 34, y: 88 }],
+                    sampleCubicBezier({ x: 34, y: 40 }, { x: 70, y: 40 }, { x: 70, y: 64 }, { x: 34, y: 64 })
+                ]
+            },
+            q: {
+                strokes: [
+                    sampleCCW(46, 52, 15, -0.2, Math.PI * 2, 24),
+                    [{ x: 61, y: 40 }, { x: 61, y: 64 }, { x: 61, y: 88 }]
+                ]
+            },
+            r: {
+                strokes: [
+                    [{ x: 36, y: 40 }, { x: 36, y: 52 }, { x: 36, y: 64 }],
+                    sampleCubicBezier({ x: 36, y: 43.2 }, { x: 52, y: 34 }, { x: 66, y: 38.5 }, { x: 64, y: 46.4 })
+                ]
+            },
+            s: {
+                strokes: [
+                    [
+                        ...sampleCubicBezier({ x: 60, y: 43.2 }, { x: 40, y: 40 }, { x: 32, y: 44.8 }, { x: 46, y: 51.2 }, 16),
+                        ...sampleCubicBezier({ x: 46, y: 51.2 }, { x: 64, y: 57.6 }, { x: 62, y: 64 }, { x: 38, y: 64 }, 16)
+                    ]
+                ]
+            },
+            t: {
+                strokes: [
+                    [{ x: 50, y: 23.5 }, { x: 50, y: 43.2 }, { x: 50, y: 64 }],
+                    [{ x: 36, y: 40 }, { x: 50, y: 40 }, { x: 64, y: 40 }]
+                ]
+            },
+            u: {
+                strokes: [
+                    [
+                        { x: 32, y: 40 },
+                        { x: 32, y: 52.8 },
+                        ...sampleCCW(50, 52.8, 18, Math.PI, Math.PI, 14),
+                        { x: 68, y: 40 }
+                    ],
+                    [{ x: 68, y: 40 }, { x: 68, y: 52 }, { x: 68, y: 64 }]
+                ]
+            },
+            v: {
+                strokes: [
+                    [{ x: 28, y: 40 }, { x: 40, y: 52 }, { x: 50, y: 64 }],
+                    [{ x: 50, y: 64 }, { x: 60, y: 52 }, { x: 72, y: 40 }]
+                ]
+            },
+            w: {
+                strokes: [
+                    [{ x: 20, y: 40 }, { x: 30, y: 64 }],
+                    [{ x: 30, y: 64 }, { x: 42, y: 43.2 }],
+                    [{ x: 42, y: 43.2 }, { x: 54, y: 64 }],
+                    [{ x: 54, y: 64 }, { x: 70, y: 40 }]
+                ]
+            },
+            x: {
+                strokes: [
+                    [{ x: 32, y: 40 }, { x: 50, y: 52 }, { x: 68, y: 64 }],
+                    [{ x: 68, y: 40 }, { x: 50, y: 52 }, { x: 32, y: 64 }]
+                ]
+            },
+            y: {
+                strokes: [
+                    [{ x: 30, y: 40 }, { x: 42, y: 52 }, { x: 50, y: 60.8 }],
+                    [{ x: 70, y: 40 }, { x: 50, y: 60.8 }, { x: 38, y: 88 }]
+                ]
+            },
+            z: {
+                strokes: [
+                    [{ x: 32, y: 40 }, { x: 50, y: 40 }, { x: 68, y: 40 }],
+                    [{ x: 68, y: 40 }, { x: 50, y: 52 }, { x: 32, y: 64 }],
+                    [{ x: 32, y: 64 }, { x: 50, y: 64 }, { x: 68, y: 64 }]
+                ]
+            }
+        };
+
+        const canvas = document.getElementById('tracing-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const PIC = {
+            eraser: "<svg viewBox='0 0 64 64' width='1em' height='1em'><rect x='8' y='28' width='48' height='22' rx='4' fill='#3b82f6'/><rect x='8' y='18' width='48' height='16' rx='3' fill='#e2e8f0'/><rect x='8' y='30' width='48' height='6' fill='#93c5fd'/></svg>",
+            glue: "<svg viewBox='0 0 64 64' width='1em' height='1em'><rect x='24' y='6' width='16' height='12' rx='2' fill='#fbbf24'/><rect x='18' y='16' width='28' height='42' rx='6' fill='#1d4ed8'/><rect x='22' y='22' width='20' height='14' rx='2' fill='#93c5fd'/></svg>"
+        };
+        const WORDS = [
+            { word: 'Kamila', emoji: '👧' },
+            { word: 'Ayan', emoji: '👦' },
+            { word: 'Halima', emoji: '🌸' },
+            { word: 'Clemence', emoji: '⭐' }
+        ];
+        let playerName = '';
+        let penColor = '#1d4ed8';
+        const PEN_COLORS = [
+            { name: 'Blue', hex: '#1d4ed8' },
+            { name: 'Navy', hex: '#1e3a8a' },
+            { name: 'Teal', hex: '#0f766e' },
+            { name: 'Green', hex: '#166534' },
+            { name: 'Purple', hex: '#6b21a8' },
+            { name: 'Red', hex: '#b91c1c' },
+            { name: 'Brown', hex: '#9a3412' },
+            { name: 'Black', hex: '#111827' }
+        ];
+        let wordIndex = 0;
+        let letterIndex = 0;
+        let currentLetter = 'p';
+        let activeTemplate = null;
+        let currentStage = 1;
+        let selectedStage = 1;
+        let unlockedStage = 1;
+        let teacherMode = false;
+        let stageDone = { 1: [], 2: [], 3: [] };
+        let copyMode = false;
+        let fontTrace = false;
+        let isDrawing = false;
+        let reviewMode = false;
+        let userPoints = [];
+        let currentStrokeIndex = 0;
+        let completedCheckpoints = new Set();
+        let currentStrokeCheckpoints = [];
+        let allCheckpointsList = [];
+
+        let strokeRadius = 24;
+        let hitRadius = 48;
+        const PASS_COVERAGE = 0.52;
+        const FAIL_OUT_OF_BOUND = 0.35;
+        const PASS_ACCURACY = 55;
+        const SAVE_KEY = 'english-name-tracing-v1';
+        const STAGE_META = [
+            { id: 1, title: 'Level 1-1', tag: 'Aa', tagClass: 'bg-emerald-500', hint: 'Trace each letter of the name' },
+            { id: 2, title: 'Level 1-2', tag: 'Name', tagClass: 'bg-indigo-500', hint: 'Trace the whole name' },
+            { id: 3, title: 'Level 1-3', tag: 'Order', tagClass: 'bg-amber-500', hint: 'Trace letters, then spell the name' }
+        ];
+
+        function loadSave() {
+            try {
+                const s = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
+                if (s.unlocked) unlockedStage = s.unlocked;
+                if (s.done) stageDone = { 1: s.done[1] || [], 2: s.done[2] || [], 3: s.done[3] || [] };
+            } catch (e) {}
+        }
+        function writeSave() {
+            localStorage.setItem(SAVE_KEY, JSON.stringify({ unlocked: unlockedStage, done: stageDone }));
+        }
+
+        function currentTemplate() {
+            if (copyMode || fontTrace) return { strokes: [] };
+            return activeTemplate || LETTER_TEMPLATES[currentLetter];
+        }
+
+        function comicFontSpec(word) {
+            const family = '"Comic Sans MS","Comic Neue","Chalkboard SE",cursive';
+            const maxH = canvasH * 0.5;
+            let size = maxH;
+            tctx.font = `700 ${size}px ${family}`;
+            let tw = tctx.measureText(word).width;
+            const maxW = canvasW * 0.9;
+            if (tw > maxW && tw > 1) {
+                size = size * (maxW / tw);
+                tctx.font = `700 ${size}px ${family}`;
+                tw = tctx.measureText(word).width;
+            }
+            return { font: `700 ${size}px ${family}`, size, x: canvasW / 2, y: canvasH * 0.64, width: tw };
+        }
+
+        function drawComicWord(gtx) {
+            const word = currentWord().word;
+            const spec = comicFontSpec(word);
+            gtx.save();
+            gtx.font = spec.font;
+            gtx.textAlign = 'center';
+            gtx.textBaseline = 'alphabetic';
+            gtx.lineJoin = 'round';
+            gtx.lineCap = 'round';
+            gtx.fillStyle = 'rgba(100,116,139,0.16)';
+            gtx.fillText(word, spec.x, spec.y);
+            gtx.setLineDash([7, 9]);
+            gtx.strokeStyle = '#64748b';
+            gtx.lineWidth = Math.max(2.2, spec.size / 22);
+            gtx.strokeText(word, spec.x, spec.y);
+            gtx.setLineDash([]);
+            gtx.restore();
+        }
+
+        function offsetStroke(stroke, dx, sx, sy) {
+            const yScale = sy == null ? sx : sy;
+            return stroke.map(p => ({ x: 50 + (p.x - 50) * sx + dx, y: 50 + (p.y - 50) * yScale }));
+        }
+
+        function buildWordTemplate(word) {
+            const chars = [...word];
+            const letterCount = chars.filter(ch => ch !== ' ' && LETTER_TEMPLATES[ch]).length;
+            const n = Math.max(1, letterCount);
+            const usable = 92;
+            const minSlotPx = Math.max(76, Math.min(canvasH * 0.85, 128));
+            let slot = (minSlotPx / Math.max(canvasW, 1)) * 100;
+            if (n * slot > usable) slot = usable / n;
+            const aspect = canvasW / Math.max(canvasH, 1);
+            let sx = (slot * 0.9) / 36;
+            let sy = sx * aspect;
+            if (sy > 0.95) {
+                sy = 0.95;
+                sx = sy / aspect;
+            }
+            const gap = slot * 0.4;
+            const extra = chars.length - letterCount;
+            let x = 50 - (n * slot + extra * gap) / 2;
+            const strokes = [];
+            chars.forEach(ch => {
+                const t = LETTER_TEMPLATES[ch];
+                if (ch === ' ' || !t) {
+                    x += gap;
+                    return;
+                }
+                const dx = x + slot / 2 - 50;
+                t.strokes.forEach(st => strokes.push(offsetStroke(st, dx, sx, sy)));
+                x += slot;
+            });
+            return { strokes };
+        }
+
+        const WIDE_MAX = 'max-w-6xl';
+        const NARROW_MAX = 'max-w-[420px]';
+
+        function applyCanvasLayout() {
+            const card = document.getElementById('trace-card');
+            const banner = document.getElementById('word-banner');
+            const header = document.getElementById('trace-header');
+            const main = document.getElementById('trace-main');
+            const nav = document.getElementById('trace-nav');
+            const review = document.getElementById('review-bar');
+            const wide = currentStage === 2;
+            [banner, nav, review].forEach(el => {
+                if (!el) return;
+                el.classList.toggle(WIDE_MAX, wide);
+                el.classList.toggle(NARROW_MAX, !wide);
+            });
+            [header, main].forEach(el => {
+                if (!el) return;
+                el.classList.toggle(WIDE_MAX, wide);
+                el.classList.toggle('max-w-4xl', !wide);
+            });
+            if (wide) {
+                card.classList.remove('aspect-square', 'max-w-[420px]');
+                card.classList.add('w-full', WIDE_MAX);
+                const phone = window.innerWidth < 768;
+                card.style.aspectRatio = phone ? '1.6 / 1' : '2.1 / 1';
+                card.style.width = '100%';
+                card.style.maxHeight = phone ? '54vh' : '58vh';
+            } else {
+                card.classList.add('aspect-square', 'max-w-[420px]');
+                card.classList.remove('w-full', WIDE_MAX);
+                card.style.aspectRatio = '';
+                card.style.maxHeight = '';
+            }
+        }
+
+        let canvasW = 1;
+        let canvasH = 1;
+        let templateDirty = true;
+        const templateCanvas = document.createElement('canvas');
+        const tctx = templateCanvas.getContext('2d');
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvasW = Math.max(1, rect.width);
+            canvasH = Math.max(1, rect.height);
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = canvasW * dpr;
+            canvas.height = canvasH * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            templateCanvas.width = canvas.width;
+            templateCanvas.height = canvas.height;
+            tctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            if (currentStage === 2 && currentWord()) {
+                activeTemplate = buildWordTemplate(currentWord().word);
+            }
+            templateDirty = true;
+            buildCheckpoints();
+            render();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        function getCanvasPos(point) {
+            return {
+                x: (point.x / 100) * canvasW,
+                y: (point.y / 100) * canvasH
+            };
+        }
+
+        function downsampleStroke(stroke) {
+            const maxPts = 8;
+            if (stroke.length <= maxPts) return stroke;
+            const out = [];
+            for (let i = 0; i < maxPts; i++) {
+                const idx = Math.round(i * (stroke.length - 1) / (maxPts - 1));
+                out.push(stroke[idx]);
+            }
+            return out;
+        }
+
+        function buildCheckpoints() {
+            completedCheckpoints.clear();
+            allCheckpointsList = [];
+            currentStrokeIndex = 0;
+            if (fontTrace) {
+                buildFontCheckpoints();
+                updateStrokeCheckpoints();
+                templateDirty = true;
+                return;
+            }
+            const template = currentTemplate();
+            if (!template) return;
+            completedCheckpoints.clear();
+            allCheckpointsList = [];
+
+            template.strokes.forEach((stroke, strokeIdx) => {
+                const pts = downsampleStroke(stroke);
+                pts.forEach((pt, ptIdx) => {
+                    const canvasPos = getCanvasPos(pt);
+                    allCheckpointsList.push({
+                        id: `${strokeIdx}-${ptIdx}`,
+                        strokeIndex: strokeIdx,
+                        pointIndex: ptIdx,
+                        isStart: ptIdx === 0,
+                        isEnd: ptIdx === pts.length - 1,
+                        x: canvasPos.x,
+                        y: canvasPos.y
+                    });
+                });
+            });
+
+            currentStrokeIndex = 0;
+            updateStrokeCheckpoints();
+            templateDirty = true;
+        }
+
+        function buildFontCheckpoints() {
+            if (canvasW < 8 || canvasH < 8) return;
+            const off = document.createElement('canvas');
+            off.width = Math.max(1, Math.round(canvasW));
+            off.height = Math.max(1, Math.round(canvasH));
+            const o = off.getContext('2d');
+            drawComicWord(o);
+            const img = o.getImageData(0, 0, off.width, off.height).data;
+            const raw = [];
+            const step = 7;
+            for (let y = 0; y < off.height; y += step) {
+                for (let x = 0; x < off.width; x += step) {
+                    if (img[(y * off.width + x) * 4 + 3] > 40) raw.push({ x, y });
+                }
+            }
+            const maxPts = 22;
+            const pts = [];
+            if (raw.length <= maxPts) {
+                pts.push(...raw);
+            } else {
+                for (let i = 0; i < maxPts; i++) {
+                    pts.push(raw[Math.round(i * (raw.length - 1) / (maxPts - 1))]);
+                }
+            }
+            pts.forEach((p, i) => {
+                allCheckpointsList.push({
+                    id: `f-${i}`,
+                    strokeIndex: 0,
+                    pointIndex: i,
+                    isStart: i === 0,
+                    isEnd: i === pts.length - 1,
+                    x: p.x,
+                    y: p.y
+                });
+            });
+        }
+
+        function updateStrokeCheckpoints() {
+            currentStrokeCheckpoints = allCheckpointsList.filter(cp => cp.strokeIndex === currentStrokeIndex);
+        }
+
+        function drawGuidelines(g) {
+            const gtx = g || ctx;
+            const ys = [0.16, 0.40, 0.64, 0.88];
+            gtx.save();
+            gtx.strokeStyle = '#cbd5e1';
+            gtx.lineWidth = 1.5;
+            ys.forEach((t, i) => {
+                gtx.setLineDash(i === 1 ? [6, 6] : []);
+                gtx.beginPath();
+                gtx.moveTo(canvasW * 0.012, canvasH * t);
+                gtx.lineTo(canvasW * 0.988, canvasH * t);
+                gtx.stroke();
+            });
+            gtx.restore();
+        }
+
+        function drawTemplate(g) {
+            const gtx = g || ctx;
+            drawGuidelines(gtx);
+            if (copyMode) return;
+            if (fontTrace) {
+                drawComicWord(gtx);
+                return;
+            }
+            const template = currentTemplate();
+            if (!template || !template.strokes.length) return;
+            gtx.lineCap = 'round';
+            gtx.lineJoin = 'round';
+
+            template.strokes.forEach((stroke, idx) => {
+                const pos0 = getCanvasPos(stroke[0]);
+                const isDot = stroke.length < 2;
+                const isPast = idx < currentStrokeIndex;
+                const isNow = idx === currentStrokeIndex;
+
+                if (isDot) {
+                    gtx.setLineDash([]);
+                    gtx.beginPath();
+                    gtx.fillStyle = isPast ? '#bfdbfe' : (isNow ? '#fef9c3' : '#f8fafc');
+                    gtx.arc(pos0.x, pos0.y, 7, 0, Math.PI * 2);
+                    gtx.fill();
+                    gtx.beginPath();
+                    gtx.strokeStyle = isPast ? '#60a5fa' : (isNow ? '#ca8a04' : '#94a3b8');
+                    gtx.lineWidth = 2.5;
+                    gtx.arc(pos0.x, pos0.y, 7, 0, Math.PI * 2);
+                    gtx.stroke();
+                    return;
+                }
+
+                gtx.beginPath();
+                stroke.forEach((pt, pIdx) => {
+                    const pos = getCanvasPos(pt);
+                    if (pIdx === 0) gtx.moveTo(pos.x, pos.y);
+                    else gtx.lineTo(pos.x, pos.y);
+                });
+
+                if (isPast) {
+                    gtx.setLineDash([]);
+                    gtx.strokeStyle = '#93c5fd';
+                    gtx.lineWidth = strokeRadius * 1.6;
+                    gtx.stroke();
+                } else {
+                    gtx.setLineDash([10, 12]);
+                    gtx.strokeStyle = isNow ? '#64748b' : '#dbe3ee';
+                    gtx.lineWidth = isNow ? strokeRadius * 1.35 : Math.max(3, strokeRadius * 0.55);
+                    gtx.stroke();
+                    gtx.setLineDash([]);
+                }
+            });
+
+            const currentStroke = template.strokes[currentStrokeIndex];
+            if (currentStroke && currentStroke.length > 1) {
+                for (let i = 0; i < currentStroke.length - 1; i++) {
+                    const p1 = getCanvasPos(currentStroke[i]);
+                    const p2 = getCanvasPos(currentStroke[i + 1]);
+                    drawDirectionArrows(p1, p2, gtx);
+                }
+            }
+
+            const lastNum = Math.min(template.strokes.length - 1, currentStrokeIndex + 1);
+            for (let idx = currentStrokeIndex; idx <= lastNum; idx++) {
+                const stroke = template.strokes[idx];
+                if (!stroke) continue;
+                const start = getCanvasPos(stroke[0]);
+                const nxy = offsetNumber(start, stroke);
+                drawStrokeNumber(nxy.x, nxy.y, idx + 1, idx === currentStrokeIndex, gtx);
+            }
+
+            allCheckpointsList.forEach(cp => {
+                if (cp.strokeIndex > currentStrokeIndex + 1) return;
+                const done = completedCheckpoints.has(cp.id);
+                const isDot = template.strokes[cp.strokeIndex] && template.strokes[cp.strokeIndex].length < 2;
+                const r = isDot ? 7 : (cp.isStart ? 16 : 12);
+                if (done) {
+                    drawStarIcon(cp.x, cp.y, isDot ? 6 : 11, '#10b981', '#047857', gtx);
+                } else if (cp.strokeIndex === currentStrokeIndex) {
+                    drawStarIcon(cp.x, cp.y, r, '#fbbf24', '#d97706', gtx);
+                } else if (cp.strokeIndex > currentStrokeIndex && cp.isStart) {
+                    drawStarIcon(cp.x, cp.y, isDot ? 6 : 10, '#e2e8f0', '#94a3b8', gtx);
+                }
+            });
+        }
+
+        function offsetNumber(start, stroke) {
+            if (!stroke || stroke.length < 2) return { x: start.x - 22, y: start.y - 22 };
+            const n = getCanvasPos(stroke[Math.min(1, stroke.length - 1)]);
+            const dx = start.x - n.x;
+            const dy = start.y - n.y;
+            const len = Math.hypot(dx, dy) || 1;
+            return { x: start.x + (dx / len) * 26, y: start.y + (dy / len) * 26 };
+        }
+
+        function drawStarIcon(cx, cy, r, fill, stroke, g) {
+            const gtx = g || ctx;
+            gtx.save();
+            gtx.translate(cx, cy);
+            gtx.beginPath();
+            gtx.fillStyle = fill;
+            gtx.strokeStyle = stroke || '#f59e0b';
+            gtx.lineWidth = 2;
+            for (let i = 0; i < 5; i++) {
+                gtx.lineTo(Math.cos((18 + i * 72) * Math.PI / 180) * r, -Math.sin((18 + i * 72) * Math.PI / 180) * r);
+                gtx.lineTo(Math.cos((54 + i * 72) * Math.PI / 180) * (r / 2), -Math.sin((54 + i * 72) * Math.PI / 180) * (r / 2));
+            }
+            gtx.closePath();
+            gtx.fill();
+            gtx.stroke();
+            gtx.restore();
+        }
+
+        function drawDirectionArrows(p1, p2, g) {
+            const gtx = g || ctx;
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 18) return;
+            const angle = Math.atan2(dy, dx);
+            gtx.save();
+            gtx.fillStyle = '#3b82f6';
+            for (let d = 22; d < dist - 12; d += 36) {
+                const ax = p1.x + (dx / dist) * d;
+                const ay = p1.y + (dy / dist) * d;
+                gtx.save();
+                gtx.translate(ax, ay);
+                gtx.rotate(angle);
+                gtx.beginPath();
+                gtx.moveTo(0, 0);
+                gtx.lineTo(-8, -6);
+                gtx.lineTo(-5, 0);
+                gtx.lineTo(-8, 6);
+                gtx.closePath();
+                gtx.fill();
+                gtx.restore();
+            }
+            gtx.restore();
+        }
+
+        function drawStrokeNumber(cx, cy, n, isCurrent, g) {
+            const gtx = g || ctx;
+            const r = isCurrent ? 16 : 13;
+            gtx.save();
+            gtx.beginPath();
+            gtx.fillStyle = isCurrent ? '#f59e0b' : '#94a3b8';
+            gtx.strokeStyle = '#fff';
+            gtx.lineWidth = 3;
+            gtx.arc(cx, cy, r, 0, Math.PI * 2);
+            gtx.fill();
+            gtx.stroke();
+            gtx.fillStyle = '#fff';
+            gtx.font = `bold ${isCurrent ? 16 : 13}px Comic Neue, sans-serif`;
+            gtx.textAlign = 'center';
+            gtx.textBaseline = 'middle';
+            gtx.fillText(String(n), cx, cy + 0.5);
+            gtx.restore();
+        }
+
+        function drawUserStrokes() {
+            if (userPoints.length < 2) return;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = penColor;
+            ctx.lineWidth = currentStage === 2 ? 16 : 16;
+            ctx.beginPath();
+            for (let i = 0; i < userPoints.length; i++) {
+                const pt = userPoints[i];
+                if (i === 0 || pt.isNewStroke) ctx.moveTo(pt.x, pt.y);
+                else ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.stroke();
+        }
+
+        function bakeTemplate() {
+            tctx.clearRect(0, 0, canvasW, canvasH);
+            drawTemplate(tctx);
+            templateDirty = false;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvasW, canvasH);
+            if (!reviewMode) {
+                if (templateDirty) bakeTemplate();
+                ctx.drawImage(templateCanvas, 0, 0, canvasW, canvasH);
+            } else {
+                drawGuidelines(ctx);
+            }
+            drawUserStrokes();
+        }
+
+        function checkProgress(pos) {
+            if (currentStrokeCheckpoints.length === 0) return;
+            currentStrokeCheckpoints.forEach((targetCP, idx) => {
+                if (completedCheckpoints.has(targetCP.id)) return;
+                const dist = Math.hypot(pos.x - targetCP.x, pos.y - targetCP.y);
+                if (dist <= hitRadius) {
+                    if (idx === 0 || completedCheckpoints.has(currentStrokeCheckpoints[idx - 1].id)) {
+                        completedCheckpoints.add(targetCP.id);
+                        if (targetCP.isStart || targetCP.isEnd) {
+                            sound.playTone(400 + (completedCheckpoints.size * 35), 'sine', 0.08);
+                        }
+                        const strokeFinished = currentStrokeCheckpoints.every(cp => completedCheckpoints.has(cp.id));
+                        if (strokeFinished) {
+                            const template = currentTemplate();
+                            if (currentStrokeIndex < template.strokes.length - 1) {
+                                currentStrokeIndex++;
+                                updateStrokeCheckpoints();
+                                templateDirty = true;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function copyProgress() {
+            const n = currentWord().word.length;
+            const y0 = canvasH * 0.06;
+            const y1 = canvasH * 0.98;
+            const pts = [];
+            for (let i = 0; i < userPoints.length; i++) {
+                const p = userPoints[i];
+                if (p.y >= y0 && p.y <= y1) pts.push(p);
+            }
+            if (pts.length < 2) {
+                return { covered: 0, n, ink: pts.length, ready: false };
+            }
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            let len = 0;
+            for (let i = 0; i < pts.length; i++) {
+                const p = pts[i];
+                if (p.x < minX) minX = p.x;
+                if (p.x > maxX) maxX = p.x;
+                if (p.y < minY) minY = p.y;
+                if (p.y > maxY) maxY = p.y;
+                if (i > 0 && !p.isNewStroke) {
+                    const q = pts[i - 1];
+                    len += Math.hypot(p.x - q.x, p.y - q.y);
+                }
+            }
+            const w = maxX - minX;
+            const h = maxY - minY;
+            const needW = Math.min(160, canvasW * 0.18);
+            const needH = Math.min(28, canvasH * 0.10);
+            const needLen = 36 * n;
+            const ready = w >= needW && h >= needH && len >= needLen && pts.length >= n * 6;
+            const widthScore = Math.min(1, w / Math.max(needW, 1));
+            const lenScore = Math.min(1, len / Math.max(needLen, 1));
+            const covered = Math.max(0, Math.min(n, Math.round(n * Math.min(widthScore, lenScore))));
+            return { covered, n, ink: pts.length, ready };
+        }
+
+        function copyIsComplete(p) {
+            return !!(p && p.ready);
+        }
+
+        function updateCopyHud() {
+            if (!copyMode || reviewMode) return;
+            const p = copyProgress();
+            document.getElementById('score-display').innerText = p.ready ? 'Lift to finish' : `Copy ${p.covered}/${p.n}`;
+            document.getElementById('score-display').className = p.ready
+                ? 'text-base sm:text-2xl font-black text-emerald-600'
+                : 'text-base sm:text-2xl font-black text-indigo-600';
+        }
+
+        function evaluateTracingQuality() {
+            if (copyMode) {
+                const p = copyProgress();
+                if (!copyIsComplete(p)) {
+                    return { isValid: false, reason: `Copy the whole word (${p.covered}/${p.n})`, accuracy: 0 };
+                }
+                return { isValid: true, reason: '', accuracy: 100 };
+            }
+            if (fontTrace) {
+                if (userPoints.length < 8 || allCheckpointsList.length < 4) {
+                    return { isValid: false, reason: 'Trace the whole word!', accuracy: 0 };
+                }
+                const coverR = strokeRadius * 1.8;
+                const maxD = strokeRadius * 1.7;
+                let covered = 0;
+                allCheckpointsList.forEach(cp => {
+                    if (userPoints.some(u => Math.hypot(u.x - cp.x, u.y - cp.y) <= coverR)) covered++;
+                });
+                let out = 0;
+                userPoints.forEach(u => {
+                    let minD = Infinity;
+                    allCheckpointsList.forEach(cp => {
+                        const d = Math.hypot(u.x - cp.x, u.y - cp.y);
+                        if (d < minD) minD = d;
+                    });
+                    if (minD > maxD) out++;
+                });
+                const coverage = covered / allCheckpointsList.length;
+                const outRatio = out / userPoints.length;
+                const accuracy = Math.round((1 - outRatio) * coverage * 100);
+                if (outRatio > 0.42) return { isValid: false, reason: 'Stay on the letters!', accuracy };
+                if (coverage < 0.48) return { isValid: false, reason: 'Trace the whole word!', accuracy };
+                return { isValid: true, reason: '', accuracy: Math.min(100, Math.max(0, accuracy)) };
+            }
+            const template = currentTemplate();
+            if (!template || userPoints.length < 5) {
+                return { isValid: false, reason: 'Please trace along the dotted letter!', accuracy: 0 };
+            }
+
+            const templatePoints = [];
+            template.strokes.forEach(stroke => {
+                if (stroke.length < 2) {
+                    templatePoints.push(getCanvasPos(stroke[0]));
+                    return;
+                }
+                for (let i = 0; i < stroke.length - 1; i++) {
+                    const p1 = getCanvasPos(stroke[i]);
+                    const p2 = getCanvasPos(stroke[i + 1]);
+                    const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+                    const steps = Math.ceil(dist / 4);
+                    for (let s = 0; s <= steps; s++) {
+                        templatePoints.push({
+                            x: p1.x + (p2.x - p1.x) * (s / steps),
+                            y: p1.y + (p2.y - p1.y) * (s / steps)
+                        });
+                    }
+                }
+            });
+
+            let outOfBoundCount = 0;
+            const maxAllowedDistance = strokeRadius * 1.55;
+            userPoints.forEach(uPt => {
+                let minDist = Infinity;
+                templatePoints.forEach(tPt => {
+                    const d = Math.hypot(uPt.x - tPt.x, uPt.y - tPt.y);
+                    if (d < minDist) minDist = d;
+                });
+                if (minDist > maxAllowedDistance) outOfBoundCount++;
+            });
+
+            const outOfBoundRatio = outOfBoundCount / userPoints.length;
+            const coverageRadius = strokeRadius * 1.4;
+            let coveredTemplateCount = 0;
+            templatePoints.forEach(tPt => {
+                if (userPoints.some(uPt => Math.hypot(uPt.x - tPt.x, uPt.y - tPt.y) <= coverageRadius)) {
+                    coveredTemplateCount++;
+                }
+            });
+
+            const coverageRatio = coveredTemplateCount / templatePoints.length;
+            const accuracyScore = Math.round((1 - outOfBoundRatio) * coverageRatio * 100);
+
+            if (outOfBoundRatio > FAIL_OUT_OF_BOUND) {
+                return { isValid: false, reason: 'Stay on the dotted line!', accuracy: accuracyScore };
+            }
+            if (coverageRatio < PASS_COVERAGE) {
+                return { isValid: false, reason: 'Trace the whole letter — follow 1, 2, 3!', accuracy: accuracyScore };
+            }
+            return { isValid: true, reason: '', accuracy: Math.min(100, Math.max(0, accuracyScore)) };
+        }
+
+        function isAllCheckpointsComplete() {
+            return allCheckpointsList.length > 0 && allCheckpointsList.every(cp => completedCheckpoints.has(cp.id));
+        }
+
+        function getEventPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function startTracing(e) {
+            if (reviewMode) return;
+            e.preventDefault();
+            isDrawing = true;
+            sound.init();
+            const pos = getEventPos(e);
+            userPoints.push({ x: pos.x, y: pos.y, isNewStroke: true });
+            checkProgress(pos);
+            document.getElementById('score-display').innerText = 'Tracing...';
+            document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-amber-500';
+            render();
+        }
+
+        let moveRaf = 0;
+        let pendingMove = null;
+        function moveTracing(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            pendingMove = getEventPos(e);
+            if (moveRaf) return;
+            moveRaf = requestAnimationFrame(flushMove);
+        }
+        function flushMove() {
+            moveRaf = 0;
+            if (!isDrawing || !pendingMove) return;
+            const pos = pendingMove;
+            pendingMove = null;
+            const last = userPoints[userPoints.length - 1];
+            if (last && Math.hypot(pos.x - last.x, pos.y - last.y) < 2.4) {
+                checkProgress(pos);
+                if (templateDirty) render();
+                return;
+            }
+            userPoints.push({ x: pos.x, y: pos.y, isNewStroke: false });
+            checkProgress(pos);
+            render();
+            updateCopyHud();
+        }
+
+        function pauseStroke() {
+            if (pendingMove) flushMove();
+            isDrawing = false;
+        }
+
+        function stopTracing() {
+            if (pendingMove) flushMove();
+            if (!isDrawing) return;
+            isDrawing = false;
+            if (copyMode) {
+                const p = copyProgress();
+                if (copyIsComplete(p)) {
+                    document.getElementById('score-display').innerText = 'Done';
+                    document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-emerald-600';
+                    triggerSuccess(100);
+                } else {
+                    document.getElementById('score-display').innerText = `Copy ${p.covered}/${p.n}`;
+                    document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-indigo-600';
+                }
+                return;
+            }
+            if (fontTrace) {
+                const result = evaluateTracingQuality();
+                if (result.isValid && result.accuracy >= PASS_ACCURACY) {
+                    document.getElementById('score-display').innerText = `${result.accuracy}%`;
+                    document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-emerald-600';
+                    triggerSuccess(result.accuracy);
+                } else if (userPoints.length > 12) {
+                    document.getElementById('score-display').innerText = 'Try Again';
+                    document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-rose-500';
+                    triggerTryAgain(result.reason);
+                }
+                return;
+            }
+            if (isAllCheckpointsComplete()) {
+                const result = evaluateTracingQuality();
+                if (result.isValid && result.accuracy >= PASS_ACCURACY) {
+                    document.getElementById('score-display').innerText = `${result.accuracy}%`;
+                    document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-emerald-600';
+                    triggerSuccess(result.accuracy);
+                } else {
+                    document.getElementById('score-display').innerText = 'Try Again';
+                    document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-rose-500';
+                    triggerTryAgain(result.reason);
+                }
+            } else {
+                const template = currentTemplate();
+                document.getElementById('score-display').innerText = `Stroke ${currentStrokeIndex + 1}/${template.strokes.length}`;
+                document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-indigo-600';
+            }
+        }
+
+        function setNextEnabled(on) {
+            ['next-btn', 'next-letter-btn'].forEach(id => {
+                const el = document.getElementById(id);
+                el.disabled = !on;
+            });
+        }
+
+        function triggerSuccess(score) {
+            reviewMode = true;
+            render();
+            if (currentStage === 3) {
+                letterInk[letterIndex] = captureLetterInk();
+            }
+            setNextEnabled(true);
+            sound.playSuccess();
+            document.getElementById('modal-score').innerText = `${score}%`;
+            document.getElementById('review-bar').classList.remove('hidden');
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            }
+        }
+
+        function triggerTryAgain(reasonMsg) {
+            sound.playError();
+            document.getElementById('try-again-reason').innerText = reasonMsg || 'Follow 1, 2, 3 and stay on the dots!';
+            const modal = document.getElementById('try-again-modal');
+            const box = document.getElementById('try-again-box');
+            modal.classList.remove('hidden');
+            box.classList.remove('animate-shake');
+            void box.offsetWidth;
+            box.classList.add('animate-shake');
+        }
+
+        function currentWord() {
+            return WORDS[wordIndex];
+        }
+
+        function setPic(el, html) {
+            if (!el) return;
+            if (typeof html === 'string' && html.trim().startsWith('<')) el.innerHTML = html;
+            else el.textContent = html || '';
+        }
+
+        function updateWordUI() {
+            const w = currentWord();
+            setPic(document.getElementById('word-emoji'), w.emoji);
+            setPic(document.getElementById('emoji-badge'), w.emoji);
+            document.getElementById('word-preview').textContent = w.word;
+            document.getElementById('letter-hint').textContent =
+                currentStage === 1 ? `Trace: ${currentLetter}` :
+                currentStage === 2 ? 'Trace the whole word' :
+                `Card ${letterIndex + 1}/${w.word.length}`;
+            const sample = document.getElementById('copy-sample');
+            sample.classList.add('hidden');
+            document.getElementById('letter-hint').classList.remove('hidden');
+            document.getElementById('word-letters').innerHTML = [...w.word].map((ch, i) => {
+                if (currentStage === 2) {
+                    return `<span class="text-indigo-600">${ch}</span>`;
+                }
+                if (i < letterIndex) return `<span class="text-emerald-500">${ch}</span>`;
+                if (i === letterIndex) return `<span class="text-indigo-600 underline">${ch}</span>`;
+                return `<span class="text-slate-400">${ch}</span>`;
+            }).join('');
+        }
+
+        function loadCurrentGlyph() {
+            const w = currentWord();
+            copyMode = currentStage === 3;
+            if (currentStage === 2) {
+                currentLetter = w.word[0];
+                fontTrace = false;
+                copyMode = false;
+                activeTemplate = buildWordTemplate(w.word);
+                strokeRadius = 18;
+                hitRadius = 42;
+            } else if (currentStage === 3) {
+                fontTrace = false;
+                copyMode = false;
+                currentLetter = w.word[letterIndex];
+                activeTemplate = LETTER_TEMPLATES[currentLetter];
+                strokeRadius = 24;
+                hitRadius = 48;
+            } else {
+                fontTrace = false;
+                currentLetter = w.word[letterIndex];
+                activeTemplate = LETTER_TEMPLATES[currentLetter];
+                strokeRadius = 24;
+                hitRadius = 48;
+            }
+            applyCanvasLayout();
+            const showUndo = currentStage === 2;
+            document.getElementById('undo-btn').classList.toggle('hidden', !showUndo);
+            document.getElementById('undo-retry-btn').classList.toggle('hidden', !showUndo);
+            resetCanvas();
+            initWordSelector();
+            updateWordUI();
+            document.getElementById('review-caption').textContent =
+                currentStage === 2 ? 'Your word!' : 'Your letter!';
+            if (currentStage === 1 && letterIndex === 0) {
+                sound.speakWordThenLetter(w.word, currentLetter);
+            } else if (currentStage === 1 || currentStage === 3) {
+                if (letterIndex === 0) sound.speakWordThenLetter(w.word, currentLetter);
+                else sound.speakLetter(currentLetter);
+            } else {
+                sound.speakWord(w.word);
+            }
+            setTimeout(() => resizeCanvas(), 40);
+        }
+
+        function initWordSelector() {
+            const selectorContainer = document.getElementById('letter-selector');
+            selectorContainer.innerHTML = '';
+            WORDS.forEach((w, i) => {
+                const btn = document.createElement('button');
+                btn.id = `word-btn-${i}`;
+                const isActive = i === wordIndex;
+                btn.className = `bubble-btn h-12 px-3 rounded-2xl text-lg font-black flex items-center justify-center gap-1 shrink-0 ${
+                    isActive
+                        ? 'bg-indigo-600 text-white shadow-lg scale-105 border-2 border-indigo-400'
+                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`;
+                btn.innerHTML = `<span class="text-xl">${w.emoji}</span><span class="hidden sm:inline">${w.word}</span>`;
+                btn.onclick = () => {
+                    wordIndex = i;
+                    letterIndex = 0;
+                    letterInk = [];
+                    loadCurrentGlyph();
+                };
+                selectorContainer.appendChild(btn);
+            });
+            setTimeout(() => {
+                const activeBtn = document.getElementById(`word-btn-${wordIndex}`);
+                if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }, 50);
+        }
+
+        function undoLastStroke() {
+            document.getElementById('try-again-modal').classList.add('hidden');
+            if (reviewMode) return;
+            if (!userPoints.length) return;
+            let i = userPoints.length - 1;
+            while (i > 0 && !userPoints[i].isNewStroke) i--;
+            userPoints = userPoints.slice(0, i);
+            completedCheckpoints.clear();
+            currentStrokeIndex = 0;
+            updateStrokeCheckpoints();
+            templateDirty = true;
+            const pts = userPoints.slice();
+            pts.forEach(p => checkProgress(p));
+            render();
+            setNextEnabled(false);
+            document.getElementById('score-display').innerText = userPoints.length ? 'Back' : 'Ready';
+            document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-indigo-600';
+        }
+
+        function resetCanvas() {
+            reviewMode = false;
+            userPoints = [];
+            completedCheckpoints.clear();
+            currentStrokeIndex = 0;
+            templateDirty = true;
+            setNextEnabled(false);
+            document.getElementById('score-display').innerText = 'Ready';
+            document.getElementById('score-display').className = 'text-base sm:text-2xl font-black text-indigo-600';
+            document.getElementById('review-bar').classList.add('hidden');
+            document.getElementById('try-again-modal').classList.add('hidden');
+            hideOrderPhase();
+            buildCheckpoints();
+            render();
+        }
+
+        function navigateLetter(delta) {
+            if (delta > 0 && !reviewMode) return;
+            const len = currentWord().word.length;
+            if (delta > 0) {
+                if (currentStage === 2) {
+                    finishWordLevel();
+                    return;
+                }
+                if (letterIndex < len - 1) {
+                    letterIndex++;
+                    loadCurrentGlyph();
+                } else if (currentStage === 3) {
+                    showOrderPhase();
+                } else {
+                    finishWordLevel();
+                }
+            } else {
+                if (currentStage === 2) return;
+                if (letterIndex > 0) {
+                    letterIndex--;
+                    loadCurrentGlyph();
+                }
+            }
+        }
+
+        let orderBank = [];
+        let orderSlots = [];
+        let letterInk = [];
+
+        function captureLetterInk() {
+            if (userPoints.length < 2) return '';
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            userPoints.forEach(p => {
+                if (p.x < minX) minX = p.x;
+                if (p.y < minY) minY = p.y;
+                if (p.x > maxX) maxX = p.x;
+                if (p.y > maxY) maxY = p.y;
+            });
+            const pad = 18;
+            minX = Math.max(0, minX - pad);
+            minY = Math.max(0, minY - pad);
+            maxX = Math.min(canvasW, maxX + pad);
+            maxY = Math.min(canvasH, maxY + pad);
+            const w = Math.max(8, maxX - minX);
+            const h = Math.max(8, maxY - minY);
+            const off = document.createElement('canvas');
+            off.width = Math.ceil(w);
+            off.height = Math.ceil(h);
+            const o = off.getContext('2d');
+            o.lineCap = 'round';
+            o.lineJoin = 'round';
+            o.strokeStyle = penColor;
+            o.lineWidth = 14;
+            o.beginPath();
+            for (let i = 0; i < userPoints.length; i++) {
+                const pt = userPoints[i];
+                const x = pt.x - minX;
+                const y = pt.y - minY;
+                if (i === 0 || pt.isNewStroke) o.moveTo(x, y);
+                else o.lineTo(x, y);
+            }
+            o.stroke();
+            return off.toDataURL('image/png');
+        }
+
+        function fillTile(el, tile) {
+            el.innerHTML = '';
+            if (tile && tile.ink) {
+                const img = document.createElement('img');
+                img.src = tile.ink;
+                img.alt = tile.ch;
+                img.className = 'w-full h-full object-contain pointer-events-none';
+                el.appendChild(img);
+            } else if (tile) {
+                el.textContent = tile.ch;
+            }
+        }
+
+        function shuffle(arr) {
+            const a = arr.slice();
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            if (a.map(t => t.ch).join('') === currentWord().word && a.length > 1) {
+                [a[0], a[a.length - 1]] = [a[a.length - 1], a[0]];
+            }
+            return a;
+        }
+
+        function showOrderPhase() {
+            const w = currentWord();
+            document.getElementById('trace-card').classList.add('hidden');
+            document.getElementById('review-bar').classList.add('hidden');
+            document.getElementById('order-view').classList.remove('hidden');
+            document.getElementById('letter-hint').textContent = 'Put the cards in order';
+            document.getElementById('order-target').innerHTML = `${w.emoji} &nbsp; ${w.word}`;
+            orderBank = shuffle([...w.word].map((ch, i) => ({ id: i, ch, ink: letterInk[i] || '' })));
+            orderSlots = Array(w.word.length).fill(null);
+            renderOrder();
+            sound.speakWord(w.word);
+            setNextEnabled(false);
+        }
+
+        function hideOrderPhase() {
+            const ov = document.getElementById('order-view');
+            if (ov) ov.classList.add('hidden');
+            const card = document.getElementById('trace-card');
+            if (card) card.classList.remove('hidden');
+        }
+
+        function renderOrder() {
+            const slotsEl = document.getElementById('order-slots');
+            const bankEl = document.getElementById('order-bank');
+            slotsEl.innerHTML = '';
+            bankEl.innerHTML = '';
+            orderSlots.forEach((tile, i) => {
+                const slot = document.createElement('button');
+                slot.className = 'order-slot';
+                if (tile) {
+                    slot.className = 'order-tile bg-indigo-50 border-indigo-400';
+                    fillTile(slot, tile);
+                    slot.onclick = () => {
+                        orderBank.push(tile);
+                        orderSlots[i] = null;
+                        renderOrder();
+                    };
+                }
+                slotsEl.appendChild(slot);
+            });
+            orderBank.forEach((tile, bi) => {
+                const btn = document.createElement('button');
+                btn.className = 'order-tile';
+                fillTile(btn, tile);
+                btn.onclick = () => {
+                    const empty = orderSlots.findIndex(s => !s);
+                    if (empty < 0) return;
+                    orderSlots[empty] = tile;
+                    orderBank.splice(bi, 1);
+                    renderOrder();
+                    checkOrder();
+                };
+                bankEl.appendChild(btn);
+            });
+        }
+
+        function checkOrder() {
+            if (orderSlots.some(s => !s)) return;
+            const got = orderSlots.map(t => t.ch).join('');
+            const want = currentWord().word;
+            if (got === want) {
+                sound.playSuccess();
+                if (typeof confetti === 'function') confetti({ particleCount: 120, spread: 80, origin: { y: 0.55 } });
+                document.getElementById('score-display').innerText = 'Correct!';
+                setTimeout(() => {
+                    hideOrderPhase();
+                    finishWordLevel();
+                }, 900);
+            } else {
+                sound.playError();
+                document.getElementById('order-slots').classList.add('animate-shake');
+                setTimeout(() => {
+                    document.getElementById('order-slots').classList.remove('animate-shake');
+                    orderBank = orderBank.concat(orderSlots.filter(Boolean));
+                    orderSlots = orderSlots.map(() => null);
+                    renderOrder();
+                }, 500);
+            }
+        }
+
+        const openedChests = new Set();
+        let coins = 0;
+        let gems = 0;
+        let running = true;
+        let worldX = 0;
+        const CHEST_GAP = 420;
+        const CHEST_START = 380;
+        let worldRaf = 0;
+        let inLevel = false;
+        let worldMode = 'run';
+        let flagIndex = 0;
+
+        function chestWorldX(i) {
+            return CHEST_START + i * CHEST_GAP;
+        }
+
+        function flagWorldX(i) {
+            return chestWorldX(i) + 210;
+        }
+
+        function buildWorld() {
+            const trees = document.getElementById('trees-layer');
+            const chests = document.getElementById('chests-layer');
+            const flags = document.getElementById('flags-layer');
+            trees.innerHTML = '';
+            chests.innerHTML = '';
+            flags.innerHTML = '';
+            for (let i = 0; i < 28; i++) {
+                const t = document.createElement('div');
+                t.className = 'tree';
+                t.style.left = (80 + i * 140) + 'px';
+                t.style.bottom = '22%';
+                t.style.transform = `scale(${0.7 + (i % 3) * 0.2})`;
+                trees.appendChild(t);
+            }
+            WORDS.forEach((w, i) => {
+                const wrap = document.createElement('div');
+                wrap.className = 'absolute flex flex-col items-center';
+                wrap.style.left = chestWorldX(i) + 'px';
+                wrap.style.bottom = '19%';
+                wrap.id = `chest-${i}`;
+                const open = openedChests.has(i);
+                wrap.innerHTML = `
+                    <div class="text-2xl mb-1">${w.emoji}</div>
+                    <div class="chest-box ${open ? 'open' : ''} flex items-center justify-center text-yellow-200 text-lg">${open ? '★' : '🔒'}</div>
+                `;
+                chests.appendChild(wrap);
+
+                const pole = document.createElement('div');
+                pole.className = 'flagpole';
+                pole.id = `flag-${i}`;
+                pole.style.left = flagWorldX(i) + 'px';
+                pole.innerHTML = `
+                    <svg width="90" height="230" viewBox="0 0 90 230">
+                        <rect x="14" y="8" width="6" height="190" rx="2" fill="#e8e4d4" stroke="#b8a070" stroke-width="1"/>
+                        <circle cx="17" cy="8" r="7" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
+                        <rect x="0" y="198" width="48" height="22" rx="2" fill="#c2410c"/>
+                        <rect x="4" y="202" width="40" height="14" fill="#9a3412"/>
+                    </svg>
+                    <div class="flag-cloth">
+                        <div style="width:64px;height:40px;background:#111827;clip-path:polygon(0 0,100% 50%,0 100%);display:flex;align-items:center;padding-left:10px;font-size:18px;line-height:1;">${w.emoji}</div>
+                    </div>
+                `;
+                flags.appendChild(pole);
+            });
+        }
+
+        function heroWorldX() {
+            return worldX + window.innerWidth * 0.12;
+        }
+
+        function updateWorldHud() {
+            document.getElementById('hud-coins').textContent = String(coins);
+            document.getElementById('hud-gems').textContent = String(gems);
+            const next = WORDS.findIndex((_, i) => !openedChests.has(i));
+            const w = WORDS[next === -1 ? WORDS.length - 1 : next];
+            document.getElementById('world-stage').textContent = `Level 1-${currentStage}`;
+            document.getElementById('world-stage-name').textContent = w.word;
+            const wp = document.getElementById('world-player');
+            if (wp) wp.textContent = playerName ? `Hi, ${playerName}!` : '';
+        }
+
+        function openChestLevel(i) {
+            if (inLevel) return;
+            inLevel = true;
+            running = false;
+            worldMode = 'run';
+            document.getElementById('hero').classList.add('hero-paused');
+            wordIndex = i;
+            letterIndex = 0;
+            letterInk = [];
+            document.getElementById('world-view').classList.add('hidden');
+            document.getElementById('trace-view').classList.remove('hidden');
+            loadCurrentGlyph();
+            setTimeout(() => resizeCanvas(), 50);
+        }
+
+        function tickWorld() {
+            if (worldMode === 'run' && running) {
+                worldX += 2.4;
+                document.getElementById('world-track').style.transform = `translateX(${-worldX}px)`;
+                document.getElementById('hero').style.left = '12%';
+                const hx = heroWorldX();
+                WORDS.forEach((_, i) => {
+                    if (openedChests.has(i)) return;
+                    const cx = chestWorldX(i);
+                    if (hx >= cx - 20 && hx < cx + 40) {
+                        openChestLevel(i);
+                    }
+                });
+            } else if (worldMode === 'toFlag' && running) {
+                worldX += 3.4;
+                document.getElementById('world-track').style.transform = `translateX(${-worldX}px)`;
+                if (heroWorldX() >= flagWorldX(flagIndex) - 8) {
+                    startFlagClimb();
+                }
+            }
+            worldRaf = requestAnimationFrame(tickWorld);
+        }
+
+        function startFlagClimb() {
+            worldMode = 'climb';
+            running = false;
+            const hero = document.getElementById('hero');
+            hero.classList.add('hero-paused');
+            hero.style.transition = 'bottom 1.15s ease-out';
+            hero.style.bottom = '52%';
+            const pole = document.getElementById(`flag-${flagIndex}`);
+            if (pole) pole.classList.add('dropped');
+            sound.playSuccess();
+            setTimeout(startCheer, 1200);
+        }
+
+        function startCheer() {
+            worldMode = 'cheer';
+            const w = WORDS[flagIndex];
+            document.getElementById('cheer-text').textContent = 'Yay!';
+            document.getElementById('cheer-word').innerHTML = `${w.emoji} ${w.word}`;
+            document.getElementById('cheer-banner').classList.remove('hidden');
+            sound.speakWord('Yay!');
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 160, spread: 90, origin: { y: 0.45 } });
+            }
+            const allDone = openedChests.size === WORDS.length;
+            setTimeout(() => {
+                document.getElementById('cheer-banner').classList.add('hidden');
+                const hero = document.getElementById('hero');
+                hero.style.transition = 'bottom 0.4s ease-in';
+                hero.style.bottom = '18%';
+                if (allDone) {
+                    document.getElementById('cheer-text').textContent = currentStage < 3 ? 'Level complete!' : 'All done!';
+                    document.getElementById('cheer-word').textContent = currentStage < 3 ? 'Next level unlocked' : 'English names';
+                    document.getElementById('cheer-banner').classList.remove('hidden');
+                    hero.classList.add('hero-paused');
+                    worldMode = 'cheer';
+                    running = false;
+                    setTimeout(() => {
+                        document.getElementById('cheer-banner').classList.add('hidden');
+                        if (currentStage < 3) selectedStage = currentStage + 1;
+                        showStation();
+                    }, 1800);
+                } else {
+                    setTimeout(() => {
+                        hero.style.transition = '';
+                        hero.classList.remove('hero-paused');
+                        worldMode = 'run';
+                        running = true;
+                    }, 420);
+                }
+            }, 2200);
+        }
+
+        function finishWordLevel() {
+            inLevel = false;
+            openedChests.add(wordIndex);
+            const name = currentWord().word;
+            if (!stageDone[currentStage].includes(name)) {
+                stageDone[currentStage].push(name);
+            }
+            if (stageDone[currentStage].length >= WORDS.length && unlockedStage < currentStage + 1 && currentStage < 3) {
+                unlockedStage = currentStage + 1;
+            }
+            writeSave();
+            coins += 1;
+            gems += 1;
+            flagIndex = wordIndex;
+            updateWorldHud();
+            buildWorld();
+            document.getElementById('trace-view').classList.add('hidden');
+            document.getElementById('world-view').classList.remove('hidden');
+            document.getElementById('hero').classList.remove('hero-paused');
+            document.getElementById('hero').style.bottom = '18%';
+            worldMode = 'toFlag';
+            running = true;
+        }
+
+        function renderStation() {
+            const box = document.getElementById('stage-cards');
+            box.innerHTML = '';
+            STAGE_META.forEach(meta => {
+                const locked = !teacherMode && meta.id > unlockedStage;
+                const done = (stageDone[meta.id] || []).length >= WORDS.length;
+                const selected = meta.id === selectedStage && !locked;
+                const card = document.createElement('button');
+                card.className = `stage-card ${locked ? 'locked' : ''} ${selected ? 'selected' : ''}`;
+                card.disabled = locked;
+                const stars = done
+                    ? '<span class="text-amber-400 text-lg">★★★</span>'
+                    : '<span class="text-slate-300 text-lg">☆☆☆</span>';
+                card.innerHTML = `
+                    <p class="font-black text-sm text-slate-700">${meta.title}</p>
+                    ${locked ? '<i class="fa-solid fa-lock text-3xl text-slate-400 my-2"></i>' : stars}
+                    <span class="stage-tag ${meta.tagClass}">${meta.tag}</span>
+                `;
+                card.onclick = () => {
+                    if (locked) return;
+                    selectedStage = meta.id;
+                    renderStation();
+                };
+                box.appendChild(card);
+            });
+            const finished = STAGE_META.filter(m => (stageDone[m.id] || []).length >= WORDS.length).length;
+            document.getElementById('stage-progress').textContent = `Completed ${finished}/3 levels`;
+            const tb = document.getElementById('teacher-banner');
+            const tt = document.getElementById('teacher-toggle');
+            if (tb) tb.classList.toggle('hidden', !teacherMode);
+            if (tt) {
+                tt.textContent = teacherMode ? 'Teacher mode: ON' : 'Teacher mode';
+                tt.className = teacherMode
+                    ? 'text-sm font-black text-amber-700 py-1'
+                    : 'text-sm font-bold text-slate-400 hover:text-slate-600 py-1';
+            }
+        }
+
+        function showStation() {
+            running = false;
+            document.getElementById('hero').classList.add('hero-paused');
+            renderStation();
+            document.getElementById('station-modal').classList.remove('hidden');
+        }
+
+        function enterStage() {
+            if (!teacherMode && selectedStage > unlockedStage) return;
+            currentStage = selectedStage;
+            document.getElementById('station-modal').classList.add('hidden');
+            resetWorld();
+            running = true;
+        }
+
+        function resetWorld() {
+            openedChests.clear();
+            coins = 0;
+            gems = 0;
+            worldX = 0;
+            running = true;
+            worldMode = 'run';
+            flagIndex = 0;
+            wordIndex = 0;
+            letterIndex = 0;
+            updateWorldHud();
+            buildWorld();
+            inLevel = false;
+            document.getElementById('cheer-banner').classList.add('hidden');
+            const hero = document.getElementById('hero');
+            hero.style.transition = '';
+            hero.style.bottom = '18%';
+            document.getElementById('world-track').style.transform = 'translateX(0)';
+            document.getElementById('trace-view').classList.add('hidden');
+            document.getElementById('world-view').classList.remove('hidden');
+            hero.classList.remove('hero-paused');
+        }
+
+        canvas.addEventListener('mousedown', startTracing);
+        canvas.addEventListener('mousemove', moveTracing);
+        canvas.addEventListener('mouseup', stopTracing);
+        canvas.addEventListener('mouseleave', pauseStroke);
+        canvas.addEventListener('touchstart', startTracing, { passive: false });
+        canvas.addEventListener('touchmove', moveTracing, { passive: false });
+        canvas.addEventListener('touchend', stopTracing);
+        canvas.addEventListener('touchcancel', pauseStroke);
+
+        document.getElementById('reset-btn').addEventListener('click', resetCanvas);
+        document.getElementById('undo-btn').addEventListener('click', undoLastStroke);
+        document.getElementById('undo-retry-btn').addEventListener('click', undoLastStroke);
+        document.getElementById('prev-letter-btn').addEventListener('click', () => navigateLetter(-1));
+        document.getElementById('next-letter-btn').addEventListener('click', () => navigateLetter(1));
+        document.getElementById('next-btn').addEventListener('click', () => navigateLetter(1));
+        document.getElementById('retry-btn').addEventListener('click', resetCanvas);
+        document.getElementById('speaker-btn').addEventListener('click', () => {
+            if (currentStage === 1) sound.speakLetter(currentLetter);
+            else sound.speakWord(currentWord().word);
+        });
+        document.getElementById('letter-title-box').addEventListener('click', () => sound.speakWord(currentWord().word));
+
+        const letterBar = document.getElementById('letter-selector');
+        document.getElementById('scroll-left-btn').addEventListener('click', () => {
+            letterBar.scrollBy({ left: -220, behavior: 'smooth' });
+        });
+        document.getElementById('scroll-right-btn').addEventListener('click', () => {
+            letterBar.scrollBy({ left: 220, behavior: 'smooth' });
+        });
+
+        document.getElementById('sound-toggle').addEventListener('click', () => {
+            sound.enabled = !sound.enabled;
+            document.getElementById('sound-icon').className = sound.enabled ? 'fa-solid fa-music' : 'fa-solid fa-volume-xmark';
+        });
+
+        document.getElementById('world-home').addEventListener('click', showStation);
+        document.getElementById('world-restart').addEventListener('click', resetWorld);
+        document.getElementById('world-pause').addEventListener('click', () => {
+            running = !running;
+            document.getElementById('world-pause-icon').className = running ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+            document.getElementById('hero').classList.toggle('hero-paused', !running);
+        });
+        document.getElementById('world-music').addEventListener('click', () => {
+            sound.enabled = !sound.enabled;
+            const ic = sound.enabled ? 'fa-solid fa-music' : 'fa-solid fa-volume-xmark';
+            document.getElementById('world-music-icon').className = ic;
+            document.getElementById('sound-icon').className = ic;
+        });
+
+        document.getElementById('station-enter').addEventListener('click', enterStage);
+        document.getElementById('teacher-toggle').addEventListener('click', () => {
+            teacherMode = !teacherMode;
+            renderStation();
+        });
+        document.getElementById('order-clear').addEventListener('click', () => {
+            orderBank = orderBank.concat(orderSlots.filter(Boolean));
+            orderSlots = orderSlots.map(() => null);
+            renderOrder();
+        });
+        document.getElementById('station-close').addEventListener('click', () => {
+            document.getElementById('station-modal').classList.add('hidden');
+        });
+
+        function applyPlayer() {
+            const hello = document.getElementById('player-hello');
+            if (hello) hello.textContent = playerName ? `Hello, ${playerName}!` : 'Hello!';
+            updateWorldHud();
+        }
+
+        function initPenSwatches() {
+            const box = document.getElementById('pen-swatches');
+            box.innerHTML = '';
+            PEN_COLORS.forEach(c => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'pen-swatch' + (c.hex === penColor ? ' selected' : '');
+                b.style.background = c.hex;
+                b.title = c.name;
+                b.setAttribute('aria-label', c.name);
+                b.onclick = () => {
+                    penColor = c.hex;
+                    box.querySelectorAll('.pen-swatch').forEach(el => el.classList.remove('selected'));
+                    b.classList.add('selected');
+                };
+                box.appendChild(b);
+            });
+        }
+
+        function tryEnableStart() {
+            const name = document.getElementById('player-name').value.trim();
+            document.getElementById('player-start').disabled = name.length < 1;
+        }
+
+        window.onload = () => {
+            loadSave();
+            selectedStage = unlockedStage;
+            buildWorld();
+            updateWorldHud();
+            tickWorld();
+            running = false;
+            initPenSwatches();
+            const nameInput = document.getElementById('player-name');
+            nameInput.addEventListener('input', tryEnableStart);
+            nameInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !document.getElementById('player-start').disabled) {
+                    document.getElementById('player-start').click();
+                }
+            });
+            document.getElementById('player-start').addEventListener('click', () => {
+                playerName = nameInput.value.trim();
+                if (!playerName) return;
+                applyPlayer();
+                document.getElementById('player-setup').classList.add('hidden');
+                showStation();
+            });
+        };
+    </script>
+</body>
+</html>
